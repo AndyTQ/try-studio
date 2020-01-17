@@ -1,8 +1,8 @@
-# COMPANY NAME
+# Try Studio
 
 ![Team Logo](./logo.png)
 
-COMPANY NAME is a company founded in the THEME industry. COMPANY NAME aims to VISION STATEMENT.
+Try Studio is a company founded in the Software for the Global Music Business industry. Try Studio aims to VISION STATEMENT.
 
 Table of Contents
 ---
@@ -10,5 +10,4 @@ Table of Contents
 - [People](./team/)
 - [Diversity](./team/diversity.md)
 - [Product & Research](./product_research/)
-    - [Market](./product_research/market.md)
     - [Roadmap](./product_research/roadmap.md)
