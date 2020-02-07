@@ -10,4 +10,5 @@ Table of Contents
 - [People](./team/)
 - [Diversity](./team/diversity.md)
 - [Product & Research](./product_research/)
+    - [Architecture Diagram](./product_research/architecture_diagram.md)
     - [Roadmap](./product_research/roadmap.md)

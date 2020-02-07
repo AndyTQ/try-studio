@@ -1,29 +1,8 @@
 # Roadmap
 
-This describes our plans...
+![Roadmap](./roadmap.png)
+In summary, a proof of concept will be ready by the end of February, a minimum viable product will ship by the end of March, and the business will focus on scaling and expanding April.
 
-- Setup a roadmap for at least the duration of this course. You may go longer to indicate long term goals. The roadmap can include as much detail as you want with the following conditions:
-    - Must include your immediate next steps
-    - Must include plans to perform user research
-    - Must include low-fidelity plans for a launch date
-    - You fill in the gaps. Be careful not to go too detailed as we have limited knowledge still.
-
-## Short Term
-
-**Duration:** Q3 2019
-
-We intend to ship X, Y, Z - list tracking issues that encompass all details.
-
-## Medium Term
-
-**Duration:** Q4 2019
-
-We intend to... medium-level of detail plans.
-
-We plan to launch a barebones alpha version in the medium term.
-
-## Long Term
-
-**Duration:** 2020
-
-We intend to... high level plans
+Further roadmap details on [Github Projects](https://github.com/dcsil/try-studio/projects)
+- [Technology Roadmap](https://github.com/dcsil/try-studio/projects/1)
+- [Business Roadmap](https://github.com/dcsil/try-studio/projects/2)
