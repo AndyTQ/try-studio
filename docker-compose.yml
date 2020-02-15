@@ -1,0 +1,24 @@
+version: '3'
+services:
+  client:
+    build: ./client
+    image: client
+    container_name: client
+    ports:
+      - 3000:${CLIENT_PORT}
+    volumes:
+      - ./client:/usr/src/app/client
+      - /usr/src/app/client/node_modules
+    environment:
+      - NODE_ENV=development
+  server:
+    build: ./server
+    image: server
+    container_name: server
+    ports:
+      - 5000:${SERVER_PORT}
+    volumes:
+      - ./server:/usr/src/app/server
+      - /usr/src/app/server/node_modules
+    environment:
+      - NODE_ENV=development
