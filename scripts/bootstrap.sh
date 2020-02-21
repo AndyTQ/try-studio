@@ -29,6 +29,11 @@ if [ ! "$(uname)" == "Darwin" ]; then
   echo "Bootstrap only supports MacOS"
   exit 1
 fi
+
+if [[ ! "$PWD" =~ scripts ]]; then
+  echo "Please run in the scripts folder"
+  exit 1
+fi
     
 if [ ! which brew > /dev/null 2>&1 ]; then
   install_homebrew
