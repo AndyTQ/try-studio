@@ -1,16 +1,18 @@
 tools:
-  exceptions:
-    - https://analytics.google.com/analytics/web/#/p222957178
-    - https://console.firebase.google.com/project/try-studio
+  exceptions: https://analytics.google.com/analytics/web/#/p222957178
   logging: null
   ci: https://github.com/dcsil/try-studio/actions
 
 services:
-  client: https://dcsil.github.io/try-studio
-  server: https://try-studio.herokuapp.com
+  production: https://dcsil.github.io/try-studio
 
 docs:
   getting_started: https://github.com/dcsil/try-studio
       
 commands:
   bootstrap: scripts/bootstrap
+  database: https://console.firebase.google.com/project/try-studio
+  server: https://try-studio.herokuapp.com
+  test:
+    - cd client && yarn test
+    - cd server && yarn test
