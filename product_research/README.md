@@ -7,4 +7,5 @@ Table of Contents
 ---
 
 - [Architecture Diagram](./architecture_diagram.md)
+- [User Research](./user_research.md)
 - [Roadmap](./roadmap.md)
