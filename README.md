@@ -2,7 +2,7 @@
 
 ![Team Logo](./logo.png)
 
-Try Studio is a company founded in the Software for the Global Music Business industry. Try Studio aims to VISION STATEMENT.
+Try Studio is a company founded in the Software for the Global Music Business industry. Try Studio aims to provide a one-stop shop for music licensing.
 
 Table of Contents
 ---
