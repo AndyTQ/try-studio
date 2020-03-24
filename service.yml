@@ -1,6 +1,6 @@
 tools:
   exceptions: https://analytics.google.com/analytics/web/#/p222957178
-  logging: null
+  logging: ""
   ci: https://github.com/dcsil/try-studio/actions
 
 services:
@@ -10,7 +10,7 @@ docs:
   getting_started: https://github.com/dcsil/try-studio
       
 commands:
-  bootstrap: scripts/bootstrap
+  bootstrap: scripts/bootstrap.sh
   database: https://console.firebase.google.com/project/try-studio
   server: https://try-studio.herokuapp.com
   test:
