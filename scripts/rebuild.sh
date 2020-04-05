@@ -13,7 +13,7 @@ fi
 cd ..
 docker-compose down
 docker rmi $(docker images | grep 'client') $(docker images | grep 'server')
-docker-compose volume prune -f
+docker volume prune -f
 docker-compose up -d --build
 
 docker-compose up -d --build 

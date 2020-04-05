@@ -1,41 +1,34 @@
 const initState = {
-    authError: null
-}
+    authError: null,
+};
 
 const authReducer = (state = initState, action) => {
-    switch(action.type){
+    switch (action.type) {
         case 'LOGIN_ERROR':
-            console.log('Login Failed');
             return {
                 ...state, 
-                authError: 'Login Failed'
-            }
+                authError: action.err.message !== "There is no user record corresponding to this identifier. The user may have been deleted." ? action.err.message : "Invalid email address or password.",
+            };
         case 'LOGIN_SUCCESS':
-            console.log('login success');
             return {
                 ...state,
                 authError: null //clear authError state
-            }
+            };
         case 'SIGNOUT_SUCCESS':
-            console.log('signout success');
             return state;
         case 'SIGNUP_SUCCESS':
-            console.log('signup success');
             return {
                 ...state,
                 authError: null
-            }
+            };
         case 'SIGNUP_ERROR':
-            debugger;
-            console.log('signup error');
-            console.log(state);
             return {
                 ...state,
                 authError: action.err.message
-            }
+            };
         default:
-            return state
+            return state;
     }
-}
+};
 
 export default authReducer;

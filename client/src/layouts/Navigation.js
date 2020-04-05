@@ -123,7 +123,7 @@ const Navigation = props => {
   };
 
   if (!auth.uid) {
-    return <Redirect to='/signin' />
+    return <Redirect to='/' />;
   }
 
   return (
@@ -143,6 +143,9 @@ const Navigation = props => {
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
           </Typography>
           <IconButton color="inherit" onClick={props.signOut}>
+            <Typography variant="button">
+              Sign Out&nbsp;
+            </Typography>
             <MeetingRoomIcon text="Sign Out"/>
           </IconButton>
         </Toolbar>
@@ -170,19 +173,18 @@ const Navigation = props => {
       </main>
     </div>
   );
-}
+};
 
 const mapStateToProps = (state) => {
-  console.log(state)
   return {
     auth: state.firebase.auth
-  }
-}
+  };
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
     signOut: () => dispatch(signOut())
-  }
-}
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navigation);

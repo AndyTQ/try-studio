@@ -15,20 +15,13 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom'; // for navigating back to sign-in page if there's no auth.
 import { signUp } from '../redux/actions/authActions';
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Try Studio
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
-
+const Copyright = () => (
+  <Typography variant="body2" color="textSecondary" align="center">
+    {'Copyright © Try Studio '}
+    {new Date().getFullYear()}
+    {'.'}
+  </Typography>
+);
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -74,7 +67,7 @@ const SignUp = props => {
   };
 
   if (auth.uid) {
-    return <Redirect to='/' />
+    return <Redirect to='/' />;
   }
 
   return (
@@ -91,7 +84,7 @@ const SignUp = props => {
           <Grid container spacing={2} justify="center">
             <Grid item xs={12}>
                 <Typography variant="body2" color="error" align="center">
-                  { authError ? <p>{ authError }</p> : null }
+                  { authError ? <span>{ authError }</span> : null }
                 </Typography>
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -168,19 +161,19 @@ const SignUp = props => {
       </Box>
     </Container>
   );
-}
+};
 
-const mapStateToProps = (state) =>{
+const mapStateToProps = (state) => {
   return {
     auth: state.firebase.auth,
-    authError: state.auth.authError
+    authError: state.auth.authError,
   }
-}
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
     signUp: (newUser) => dispatch(signUp(newUser))
-  }
-}
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

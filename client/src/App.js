@@ -1,5 +1,7 @@
 import React from 'react';
 import Routes from './Routes';
+import { ThemeProvider } from '@material-ui/core/styles';
+import theme from './Theme';
 
 // redux packages
 import { Provider, useSelector } from 'react-redux';
@@ -22,24 +24,26 @@ const store = configureStore(initialState);
 
 firebase.initializeApp(fbConfig);
 
-function AuthIsLoaded({children}){
-  const auth = useSelector(state => state.firebase.auth)
+function AuthIsLoaded ({ children }) {
+  const auth = useSelector(state => state.firebase.auth);
   if (!isLoaded(auth)) return <></>;
-  return children
+  return children;
 }
 
 export default function App () {
   return (
-    <Provider store={store}>
-      <ReactReduxFirebaseProvider
-        firebase={firebase}
-        config={rfConfig}
-        dispatch={store.dispatch}
-        createFirestoreInstance={createFirestoreInstance}>
-        <AuthIsLoaded>
-          <Routes />
-        </AuthIsLoaded>
-      </ReactReduxFirebaseProvider>
-    </Provider>
-  )
-}
+    <ThemeProvider theme={theme}>
+      <Provider store={store}>
+        <ReactReduxFirebaseProvider
+          firebase={firebase}
+          config={rfConfig}
+          dispatch={store.dispatch}
+          createFirestoreInstance={createFirestoreInstance}>
+          <AuthIsLoaded>
+            <Routes />
+          </AuthIsLoaded>
+        </ReactReduxFirebaseProvider>
+      </Provider>
+    </ThemeProvider>
+  );
+};

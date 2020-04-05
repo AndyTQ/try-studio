@@ -4,7 +4,6 @@
  */
 
 import React, { useState } from 'react';
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -14,9 +13,10 @@ import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import Theme from '../Theme';
+import Logo from '../logo.png';
 
 import { connect } from 'react-redux';
 import { signIn } from '../redux/actions/authActions'
@@ -26,25 +26,20 @@ import { Redirect } from 'react-router-dom'; // for navigating back to sign-in p
 /**
  * @returns The copyright text
  */
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Try Studio
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+const Copyright = () => (
+  <Typography variant="body2" color="textSecondary" align="center">
+    {'Copyright © Try Studio '}
+    {new Date().getFullYear()}
+    {'.'}
+  </Typography>
+);
 
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
   },
   image: {
-    backgroundImage: 'url(https://source.unsplash.com/random)',
+    backgroundImage: 'url(https://images.unsplash.com/photo-1492560704044-e15259ca1c61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80)',
     backgroundRepeat: 'no-repeat',
     backgroundColor:
       theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
@@ -68,22 +63,25 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  logo: {
+    margin: theme.spacing(1),
+  },
 }));
 
 const SignInSide = props => {
-  const classes = useStyles();
-  const { auth } = props;
+  const classes = useStyles(Theme);
+  const { auth, authError } = props;
 
   const [state, setState] = useState({
       email: '',
-      password: ''
+      password: '',
     }
   );
 
   const handleChange = (e) => {
     setState({
       ...state,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -93,7 +91,7 @@ const SignInSide = props => {
   };
 
   if (auth.uid) {
-    return <Redirect to='/' />
+    return <Redirect to='/dashboard' />;
   }
 
   return (
@@ -102,11 +100,12 @@ const SignInSide = props => {
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar>
+          <img src={Logo} className={classes.logo} alt="Try Studio" />
           <Typography component="h1" variant="h5">
             Sign in
+          </Typography>
+          <Typography variant="body2" color="error" align="center">
+            { authError ? <span>{ authError }</span> : null }
           </Typography>
           <form className={classes.form} onSubmit={handleSubmit}>
             <TextField
@@ -166,18 +165,19 @@ const SignInSide = props => {
       </Grid>
     </Grid>
   );
-}
+};
 
 const mapStateToProps = (state) => {
   return {
-    auth: state.firebase.auth
-  }
-}
+    auth: state.firebase.auth,
+    authError: state.auth.authError,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
     signIn: (creds) => dispatch(signIn(creds))
-  }
-}
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignInSide)
+export default connect(mapStateToProps, mapDispatchToProps)(SignInSide);

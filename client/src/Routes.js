@@ -1,6 +1,6 @@
 import React from 'react';
 import { Switch, Redirect } from 'react-router-dom';
-import { Licenses, SignIn, SignUp } from './pages';
+import { Licenses, SignIn, SignUp, Dashboard, Playlists, Settings } from './pages';
 import { Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import RouteWithLayout from './RouteWithLayout';
@@ -16,12 +16,11 @@ const Routes = () => {
   return (
     <Router history={browserHistory}>
       <Switch>
-        <RouteWithLayout exact path="/" component={Dashboard} layout={NavigationLayout} />
+        <RouteWithLayout exact path="/" component={SignIn} layout={DefaultLayout} />
         <RouteWithLayout path="/dashboard" component={Dashboard} layout={NavigationLayout} />
-        <RouteWithLayout path="/mylicenses" component={Licenses} layout={NavigationLayout} />
-        <RouteWithLayout path="/streaming" component={Streaming} layout={NavigationLayout} />
+        <RouteWithLayout path="/licenses" component={Licenses} layout={NavigationLayout} />
+        <RouteWithLayout path="/playlists" component={Playlists} layout={NavigationLayout} />
         <RouteWithLayout path="/settings" component={Settings} layout={NavigationLayout} />
-        <RouteWithLayout path="/signin" component={SignIn} layout={DefaultLayout} />
         <RouteWithLayout path="/signup" component={SignUp} layout={DefaultLayout} />
         <Redirect path="/try-studio" to="/" />
         <Redirect to="/not-found" />
@@ -29,23 +28,5 @@ const Routes = () => {
     </Router>
   );
 };
-
-const Dashboard = () => (
-  <div>
-    Dashboard
-  </div>
-);
-
-const Streaming = () => (
-  <div>
-    Streaming
-  </div>
-);
-
-const Settings = () => (
-  <div>
-    Setting
-  </div>
-);
 
 export default Routes;

@@ -14,14 +14,14 @@ import BarChartIcon from '@material-ui/icons/BarChart';
 
 const items = [
   {icon: <DashboardIcon />, field: "dashboard", name: "Dashboard"},
-  {icon: <ShoppingCartIcon />,field: "mylicenses", name: "My Licenses"},
-  {icon: <PeopleIcon />, field: "streaming", name: "Streaming"},
+  {icon: <ShoppingCartIcon />,field: "licenses", name: "Licenses"},
+  {icon: <PeopleIcon />, field: "playlists", name: "Playlists"},
   {icon: <BarChartIcon />, field: "settings", name: "Settings"},
-]
+];
 
 /***** Main list items in the navigation bar *****/
 export const mainListItems = items.map((item) =>
-  <div>
+  <div key={item.name}>
     <ListItem button component={Link} to= {"/" + item.field}>
       <ListItemIcon>
         {item.icon}

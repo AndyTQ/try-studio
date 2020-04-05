@@ -1,5 +1,3 @@
-
-
 export const signIn = (credentials) => {
     return (dispatch, getState, {getFirebase}) => {
         const firebase = getFirebase();
@@ -11,8 +9,8 @@ export const signIn = (credentials) => {
         }).catch((err) => {
             dispatch({type: 'LOGIN_ERROR', err});
         })
-    }
-}
+    };
+};
 
 export const signOut = () => {
     return (dispatch, getState, {getFirebase}) => {
@@ -20,8 +18,8 @@ export const signOut = () => {
         firebase.auth().signOut().then(() => {
             dispatch({type: 'SIGNOUT_SUCCESS'});
         });
-    }
-}
+    };
+};
 
 export const signUp = (newUser) => {
     return (dispatch, getState, {getFirebase}) => {
@@ -31,8 +29,7 @@ export const signUp = (newUser) => {
             newUser.email,
             newUser.password
         ).then((resp) => {
-            debugger;
-            return firestore.collection('Users').doc(resp.user.uid).set({
+            return firestore.collection('users').doc(resp.user.uid).set({
                 firstName: newUser.firstName,
                 lastName: newUser.lastName,
             }).then(() => {
@@ -43,5 +40,5 @@ export const signUp = (newUser) => {
         }).catch(err => {
             dispatch({ type: 'SIGNUP_ERROR', err})
         })
-    }
-}
+    };
+};
