@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
-import MaterialTable from 'material-table';
+import MaterialTable, { MTableToolbar } from 'material-table';
 import TablePagination from '@material-ui/core/TablePagination';
 
 import { forwardRef } from 'react';
+
 
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
@@ -14,11 +15,14 @@ import DeleteOutline from '@material-ui/icons/DeleteOutline';
 import Edit from '@material-ui/icons/Edit';
 import FilterList from '@material-ui/icons/FilterList';
 import FirstPage from '@material-ui/icons/FirstPage';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 import LastPage from '@material-ui/icons/LastPage';
 import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
+import Add from '@material-ui/icons/Add'
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -40,7 +44,8 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 };
 
-const Table = ({ licenses }) => {
+const Table = ({ title, licenses }) => {
+ 
   const [state, setState] = React.useState({
     columns: [
       { title: 'License ID', field: 'licenseId', type: 'string' },
@@ -65,42 +70,8 @@ const Table = ({ licenses }) => {
       title="Licenses"
       columns={state.columns}
       data={state.data}
-      editable={{
-        onRowAdd: newData =>
-          new Promise(resolve => {
-            setTimeout(() => {
-              resolve();
-              setState(prevState => {
-                const data = [...prevState.data];
-                data.push(newData);
-                return { ...prevState, data };
-              });
-            }, 600);
-          }),
-        onRowUpdate: (newData, oldData) =>
-          new Promise(resolve => {
-            setTimeout(() => {
-              resolve();
-              if (oldData) {
-                setState(prevState => {
-                  const data = [...prevState.data];
-                  data[data.indexOf(oldData)] = newData;
-                  return { ...prevState, data };
-                });
-              }
-            }, 600);
-          }),
-        onRowDelete: oldData =>
-          new Promise(resolve => {
-            setTimeout(() => {
-              resolve();
-              setState(prevState => {
-                const data = [...prevState.data];
-                data.splice(data.indexOf(oldData), 1);
-                return { ...prevState, data };
-              });
-            }, 600);
-          }),
+      style={{
+        boxShadow: 'rgba(53, 64, 82, 0.05) 0px 0px 14px 0px',
       }}
       components={{
         Pagination: props => (
@@ -111,7 +82,39 @@ const Table = ({ licenses }) => {
               rowsPerPage={10}
             />
           </div>
+        ),
+        Toolbar: props => ( // Override the original toolbar
+          <div>
+            <MTableToolbar {...props}
+              title={
+                <Typography component="h1" variant="h6" color="inherit">
+                  {title}
+                  {/* Attempted to use Redirect and history.push but did not work. */}
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    startIcon={<Add />}
+                    href="/newlicense"
+                    style={{ marginLeft: '15px' }}
+                  >
+                    Add New
+                  </Button>
+                </Typography>
+              }
+            />
+          </div>
         )
+      }}
+      options={{
+        rowStyle: {
+          backgroundColor: '#FFF',
+        },
+        headerStyle: {
+          backgroundColor: '#FFF',
+          color: 'primary',
+        },
+        exportButton: true,
+        pageSize: 11, // Some number large enough so that it expands to the entire page...
       }}
     />
   );

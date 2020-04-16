@@ -3,187 +3,142 @@
  * From https://github.com/mui-org/material-ui/tree/master/docs/src/pages/getting-started/templates/dashboard
  */
 
-import React from 'react';
-import clsx from 'clsx';
+import React, {useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
+import Link from '@material-ui/core/Link';
 import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import Button from '@material-ui/core/Button';
+import Avatar from '@material-ui/core/Avatar';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import { mainListItems } from '../components/ListItems';
 import { connect } from 'react-redux';
-import { signOut } from '../redux/actions/authActions';
+import { signOut, getUser } from '../redux/actions/authActions';
 import { Redirect } from 'react-router-dom'; // for navigating back to sign-in page if there's no auth.
 
 const drawerWidth = 240;
 
-/**
- * The custom material-ui styles for the navigation bar
- */
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
   },
-  toolbar: {
-    paddingRight: 24, // keep right padding when drawer closed
-  },
-  toolbarIcon: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: '0 8px',
-    ...theme.mixins.toolbar,
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    marginRight: 36,
-  },
-  menuButtonHidden: {
-    display: 'none',
-  },
   title: {
     flexGrow: 1,
   },
-  drawerPaper: {
-    position: 'relative',
-    whiteSpace: 'nowrap',
+  appBar: {
+    width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: drawerWidth,
+    backgroundColor: "white",
+    boxShadow: "rgba(53, 64, 82, 0.05) 0px 0px 14px 0px;",
+  },
+  toolBar: {
+    paddingTop: '10px', paddingBottom: '10px'
+  },
+  drawer: {
     width: drawerWidth,
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
+    flexShrink: 0,
   },
-  drawerPaperClose: {
-    overflowX: 'hidden',
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    width: theme.spacing(7),
-    [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(9),
-    },
+  drawerPaper: {
+    backgroundColor: "#1b2430",
+    width: drawerWidth,
+    color: "rgb(238, 238, 238)"
   },
-  appBarSpacer: theme.mixins.toolbar,
+  logoBar: {
+    backgroundColor: "#232f3e",
+  },
+  drawerContainer: {
+    overflow: 'auto',
+  },
   content: {
     flexGrow: 1,
-    height: '100vh',
-    overflow: 'auto',
+    backgroundColor: theme.palette.background.default,
+    padding: theme.spacing(5),
   },
-  container: {
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
-  },
-  paper: {
-    padding: theme.spacing(2),
-    display: 'flex',
-    overflow: 'auto',
-    flexDirection: 'column',
-  },
-  fixedHeight: {
-    height: 240,
-  },
+  clickable: {
+    marginLeft: '15px',
+    marginRight: '15px',
+  }
 }));
 
-/**
- * The navigation component being displayed on the top of the app after the user logs in.
- * @param props 
- */
 const Navigation = props => {
-  const { auth } = props;
-  const { children } = props; // Object destructuring; extract the children
+  const { auth, currUser, children, getUser} = props;
   const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   if (!auth.uid) {
     return <Redirect to='/' />;
-  }
+  } 
 
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
-        <Toolbar className={classes.toolbar}>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+      <AppBar position="absolute" className={classes.appBar}>
+        <Toolbar className={classes.toolBar}>
+          <Typography component="h1" variant="h6" color="textSecondary" noWrap className={classes.title}>
           </Typography>
-          <IconButton color="inherit" onClick={props.signOut}>
-            <Typography variant="button">
-              Sign Out&nbsp;
+          <Avatar alt="Remy Sharp" src="https://material-ui.com/static/images/avatar/1.jpg" />
+          <Link href='/settings'>
+            <Typography className={classes.clickable} color="textPrimary" >
+              {(currUser == null ? 'Loading...' : currUser.firstName + ' ' + currUser.lastName)}
             </Typography>
-            <MeetingRoomIcon text="Sign Out"/>
-          </IconButton>
+          </Link>
+          <Divider orientation="vertical" flexItem />
+          <Button
+            className={classes.clickable}
+            startIcon={<MeetingRoomIcon />}
+            onClick={props.signOut}>
+            Sign Out
+            </Button>
         </Toolbar>
       </AppBar>
       <Drawer
+        className={classes.drawer}
         variant="permanent"
         classes={{
-          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+          paper: classes.drawerPaper,
         }}
-        open={open}
       >
-        <div className={classes.toolbarIcon}>
-          <IconButton onClick={handleDrawerClose}>
-            <ChevronLeftIcon />
-          </IconButton>
+        <Toolbar className={classes.logoBar}>
+          <img
+            src={process.env.PUBLIC_URL + '/logo_white.svg'}
+            alt="Logo"
+            width={125}
+            height={60}
+          />
+
+        </Toolbar>
+        <div className={classes.drawerContainer}>
+          <List>{mainListItems}</List>
+          <Divider />
         </div>
-        <Divider />
-        <List>{mainListItems}</List>
-        <Divider />
-        
       </Drawer>
       <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
-          { children }
+        <Toolbar />
+        {children}
       </main>
     </div>
   );
-};
+}
 
 const mapStateToProps = (state) => {
   return {
-    auth: state.firebase.auth
+    auth: state.firebase.auth,
+    currUser: state.auth.currUser
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    signOut: () => dispatch(signOut())
+    signOut: () => dispatch(signOut()),
+    getUser: () => dispatch(getUser())
   };
 };
 

@@ -12,7 +12,8 @@ export const getBusinesses = () => {
       businessIds = doc.data().businesses;
     }).catch(err => {
       dispatch({type: 'GET_BUSINESSES_ERROR', err});
-    }).then(() => {
+    }).then((doc, err) => {
+      if (businessIds){
       businessesRef.where(firebase.firestore.FieldPath.documentId(), "in", businessIds).get().then(snapshot => {
         snapshot.forEach(doc => {
           businesses.push(doc.data());
@@ -24,7 +25,11 @@ export const getBusinesses = () => {
           type: 'GET_BUSINESSES_SUCCESS',
           businesses,
         });
-      });
+      });            
+      } 
+      else{
+        dispatch({type: 'GET_LICENSES_ERROR', err}); // The user doesn't have any licenses.
+      }
     });
   };
 };

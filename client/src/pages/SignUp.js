@@ -83,9 +83,9 @@ const SignUp = props => {
         <form className={classes.form} onSubmit={handleSubmit}>
           <Grid container spacing={2} justify="center">
             <Grid item xs={12}>
-                <Typography variant="body2" color="error" align="center">
-                  { authError ? <span>{ authError }</span> : null }
-                </Typography>
+              <Typography variant="body2" color="error" align="center">
+                {authError ? <span>{authError}</span> : null}
+              </Typography>
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -149,7 +149,7 @@ const SignUp = props => {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="signin" variant="body2">
+              <Link href="/" variant="body2">
                 Already have an account? Sign in
               </Link>
             </Grid>

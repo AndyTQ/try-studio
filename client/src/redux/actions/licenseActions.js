@@ -12,21 +12,26 @@ export const getLicenses = () => {
         licenseIds = doc.data().licenses;
       }).catch(err => {
         dispatch({type: 'GET_LICENSES_ERROR', err});
-      }).then(() => {
-        licensesRef.where(firebase.firestore.FieldPath.documentId(), "in", licenseIds).get().then(snapshot => {
-          snapshot.forEach(doc => {
-            let data = doc.data();
-            data["licenseId"] = doc.id;
-            licenses.push(data);
+      }).then((doc, err) => {
+        if (licenseIds){
+          licensesRef.where(firebase.firestore.FieldPath.documentId(), "in", licenseIds).get().then(snapshot => {
+            snapshot.forEach(doc => {
+              let data = doc.data();
+              data["licenseId"] = doc.id;
+              licenses.push(data);
+            });
+          }).catch(err => {
+            dispatch({type: 'GET_LICENSES_ERROR', err});
+          }).then(() => {
+            dispatch({
+              type: 'GET_LICENSES_SUCCESS',
+              licenses,
+            });
           });
-        }).catch(err => {
-          dispatch({type: 'GET_LICENSES_ERROR', err});
-        }).then(() => {
-          dispatch({
-            type: 'GET_LICENSES_SUCCESS',
-            licenses,
-          });
-        });
+        }
+        else{
+          dispatch({type: 'GET_LICENSES_ERROR', err}); // The user doesn't have any licenses.
+        }
       });
     };
   };

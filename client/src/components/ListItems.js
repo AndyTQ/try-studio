@@ -13,45 +13,20 @@ import BarChartIcon from '@material-ui/icons/BarChart';
 // import AssignmentIcon from '@material-ui/icons/Assignment';
 
 const items = [
-  {icon: <DashboardIcon />, field: "dashboard", name: "Dashboard"},
-  {icon: <ShoppingCartIcon />,field: "licenses", name: "Licenses"},
-  {icon: <PeopleIcon />, field: "playlists", name: "Playlists"},
-  {icon: <BarChartIcon />, field: "settings", name: "Settings"},
+  { icon: <DashboardIcon />, field: "dashboard", name: "Dashboard" },
+  { icon: <ShoppingCartIcon />, field: "licenses", name: "Licenses" },
+  { icon: <PeopleIcon />, field: "playlists", name: "Playlists" },
+  { icon: <BarChartIcon />, field: "settings", name: "Settings" },
 ];
 
 /***** Main list items in the navigation bar *****/
 export const mainListItems = items.map((item) =>
   <div key={item.name}>
-    <ListItem button component={Link} to= {"/" + item.field}>
-      <ListItemIcon>
+    <ListItem button component={Link} to={"/" + item.field} style={{ height: '45px' }}>
+      <ListItemIcon style={{ marginLeft: '0.5em', color: "rgb(238,238,238)", opacity: 0.5 }}>
         {item.icon}
       </ListItemIcon>
-      <ListItemText primary={item.name} />
+      <ListItemText primary={item.name} style={{ marginLeft: '-1em' }} />
     </ListItem>
   </div>
 );
-
-/***** Secondary list items in the navigation bar *****/
-// export const secondaryListItems = (
-//   <div>
-//     <ListSubheader inset>Saved reports</ListSubheader>
-//     <ListItem button>
-//       <ListItemIcon>
-//         <AssignmentIcon />
-//       </ListItemIcon>
-//       <ListItemText primary="Current month" />
-//     </ListItem>
-//     <ListItem button>
-//       <ListItemIcon>
-//         <AssignmentIcon />
-//       </ListItemIcon>
-//       <ListItemText primary="Last quarter" />
-//     </ListItem>
-//     <ListItem button>
-//       <ListItemIcon>
-//         <AssignmentIcon />
-//       </ListItemIcon>
-//       <ListItemText primary="Year-end sale" />
-//     </ListItem>
-//   </div>
-// );

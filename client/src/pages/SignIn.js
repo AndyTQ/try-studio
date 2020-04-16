@@ -37,20 +37,25 @@ const Copyright = () => (
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
-  },
-  image: {
-    backgroundImage: 'url(https://images.unsplash.com/photo-1492560704044-e15259ca1c61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80)',
+    backgroundImage: 'url(' + process.env.PUBLIC_URL + '/signin_photo.png)',
     backgroundRepeat: 'no-repeat',
     backgroundColor:
       theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
     backgroundSize: 'cover',
     backgroundPosition: 'center',
   },
+  image: {
+
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   paper: {
     margin: theme.spacing(8, 4),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    backgroundColor: 'transparent'
   },
   avatar: {
     margin: theme.spacing(1),
@@ -65,7 +70,20 @@ const useStyles = makeStyles((theme) => ({
   },
   logo: {
     margin: theme.spacing(1),
+    width: 300 * 1.3,
+    height: 110 * 1.3
   },
+  mottoBox: {
+    padding: 20,
+    borderRadius: 10,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+  },
+  motto: {
+    color: 'white',
+    fontWeight: 300,
+    maxWidth: 600,
+    textIndent: 40
+  }
 }));
 
 const SignInSide = props => {
@@ -97,12 +115,21 @@ const SignInSide = props => {
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
-      <Grid item xs={false} sm={4} md={7} className={classes.image} />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+      <Grid item xs={false} sm={4} md={7} className={classes.image} >
+      <div className={classes.mottoBox}>
+        <Typography component="h1" variant="h5" className={classes.motto}>
+          &quot;{"My business has been completed shifted by the infinite power from Try Studio. I believe that they will change the entire planet."}&quot;
+        </Typography>
+        <Typography component="h1" variant="h5" className={classes.motto} align='right'>
+          -- CEO, Macrohard
+        </Typography>
+      </div>
+      </Grid>
+      <Grid style={{backgroundColor: 'rgba(255,255,255,0.7)'}} item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
           <img src={Logo} className={classes.logo} alt="Try Studio" />
-          <Typography component="h1" variant="h5">
-            Sign in
+          <Typography component="h1" color="textSecondary" variant="h5" style={{fontWeight: 400}}>
+            Already have an account? Sign in!
           </Typography>
           <Typography variant="body2" color="error" align="center">
             { authError ? <span>{ authError }</span> : null }

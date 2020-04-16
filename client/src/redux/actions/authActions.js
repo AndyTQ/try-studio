@@ -1,14 +1,45 @@
 export const signIn = (credentials) => {
     return (dispatch, getState, {getFirebase}) => {
         const firebase = getFirebase();
+        const firestore = firebase.firestore();
+        let currUser = null;
+        
         firebase.auth().signInWithEmailAndPassword(
             credentials.email,
             credentials.password
-        ).then(() => {
-            dispatch({type: 'LOGIN_SUCCESS'});
+        ).then((resp) => {
+            return firestore.collection('users').doc(resp.user.uid).get().then(
+                (doc) => {
+                    if (doc.exists){
+                        currUser = doc.data();
+                        dispatch({type: 'LOGIN_SUCCESS', currUser});
+                    }
+                }
+            ).catch((err) => {
+                dispatch({type: 'LOGIN_ERROR', err});
+            });
         }).catch((err) => {
             dispatch({type: 'LOGIN_ERROR', err});
         })
+    };
+};
+
+
+export const getUser = () => {
+    return (dispatch, getState, {getFirebase}) => {
+        const firebase = getFirebase();
+        const firestore = firebase.firestore();
+        let currUser = null;
+        firestore.collection('users').doc(firebase.auth().currentUser.uid).get().then(
+            (doc) => {
+                if (doc.exists){
+                    currUser = doc.data();
+                    dispatch({type: 'RETRIEVE_SUCCESS', currUser});
+                }
+            }
+        ).catch((err) => {
+            dispatch({type: 'LOGRETRIEVE_ERROR', err});
+        });
     };
 };
 
