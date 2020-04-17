@@ -16,7 +16,7 @@ import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
-import { mainListItems } from '../components/ListItems';
+import { ListItems } from '../components';
 import { connect } from 'react-redux';
 import { signOut, getUser } from '../redux/actions/authActions';
 import { Redirect } from 'react-router-dom'; // for navigating back to sign-in page if there's no auth.
@@ -72,19 +72,19 @@ const Navigation = props => {
   useEffect(() => {
     getUser();
   }, []);
-
+  
   if (!auth.uid) {
     return <Redirect to='/' />;
-  } 
-
+  }
+  
   return (
     <div className={classes.root}>
       <CssBaseline />
       <AppBar position="absolute" className={classes.appBar}>
         <Toolbar className={classes.toolBar}>
           <Typography component="h1" variant="h6" color="textSecondary" noWrap className={classes.title}>
+          
           </Typography>
-          <Avatar alt="Remy Sharp" src="https://material-ui.com/static/images/avatar/1.jpg" />
           <Link href='/settings'>
             <Typography className={classes.clickable} color="textPrimary" >
               {(currUser == null ? 'Loading...' : currUser.firstName + ' ' + currUser.lastName)}
@@ -113,10 +113,9 @@ const Navigation = props => {
             width={125}
             height={60}
           />
-
         </Toolbar>
         <div className={classes.drawerContainer}>
-          <List>{mainListItems}</List>
+          <List>{ListItems}</List>
           <Divider />
         </div>
       </Drawer>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Switch, Redirect } from 'react-router-dom';
-import { Licenses, SignIn, SignUp, Dashboard, Playlists, Settings, NewLicense } from './pages';
+import { Licenses, SignIn, SignUp, Dashboard, Playlists, Settings } from './pages';
 import { BrowserRouter as Router } from 'react-router-dom';
 import RouteWithLayout from './RouteWithLayout';
 import { Navigation as NavigationLayout } from './layouts';
@@ -20,7 +20,6 @@ const Routes = () => {
         <RouteWithLayout path="/licenses" component={Licenses} layout={NavigationLayout} />
         <RouteWithLayout path="/playlists" component={Playlists} layout={NavigationLayout} />
         <RouteWithLayout path="/settings" component={Settings} layout={NavigationLayout} />
-        <RouteWithLayout path="/newlicense" component={NewLicense} layout={NavigationLayout} forceRefresh={true} />
         <RouteWithLayout path="/signup" component={SignUp} layout={DefaultLayout} />
         <Redirect path="/try-studio" to="/" />
         <Redirect to="/not-found" />

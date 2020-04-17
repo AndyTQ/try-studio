@@ -13,14 +13,14 @@ import BarChartIcon from '@material-ui/icons/BarChart';
 // import AssignmentIcon from '@material-ui/icons/Assignment';
 
 const items = [
-  { icon: <DashboardIcon />, field: "dashboard", name: "Dashboard" },
+  { icon: <DashboardIcon />, field: "dashboard", name: "Businesses" },
   { icon: <ShoppingCartIcon />, field: "licenses", name: "Licenses" },
   { icon: <PeopleIcon />, field: "playlists", name: "Playlists" },
   { icon: <BarChartIcon />, field: "settings", name: "Settings" },
 ];
 
 /***** Main list items in the navigation bar *****/
-export const mainListItems = items.map((item) =>
+const ListItems = items.map((item) =>
   <div key={item.name}>
     <ListItem button component={Link} to={"/" + item.field} style={{ height: '45px' }}>
       <ListItemIcon style={{ marginLeft: '0.5em', color: "rgb(238,238,238)", opacity: 0.5 }}>
@@ -30,3 +30,5 @@ export const mainListItems = items.map((item) =>
     </ListItem>
   </div>
 );
+
+export default ListItems;

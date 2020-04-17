@@ -23,12 +23,12 @@ const Playlists = () => {
         </Grid>
         <Grid item xs={10}>
           <div align='center'>
-            <Table className={classes.content} title="My Music"/>
+            <Table className={classes.content} title="My Music" />
           </div>
         </Grid>
       </Grid>
     </div>
-    )
+  )
 }
 
 export default Playlists;

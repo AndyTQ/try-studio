@@ -6,8 +6,7 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import DownloadIcon from '@material-ui/icons/CloudDownload';
-import TwitterIcon from '@material-ui/icons/Twitter';
-import LicenseSummary from '../components/LicenseSummary';
+import LicenseSummary from './LicenseSummary';
 
 import { useForm, Controller } from 'react-hook-form';
 import { DevTool } from 'react-hook-form-devtools';
@@ -18,7 +17,7 @@ import {
   Radio,
 } from "@material-ui/core";
 
-import Location from "../components/Location";
+import Location from "./Location";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -59,7 +58,6 @@ function getSteps() {
 export default function HorizontalLinearStepper() {
   const classes = useStyles();
   const { handleSubmit, setValue, watch, control } = useForm();
-
   const [activeStep, setActiveStep] = React.useState(0);
   const [data, setData] = React.useState(null);
   const [formRef, setFormRef] = React.useState(null);
@@ -237,17 +235,10 @@ export default function HorizontalLinearStepper() {
                 variant="contained"
                 color="primary"
                 className={classes.button}
+                onClick={() => {window.print()}}
                 startIcon={<DownloadIcon />}
               >
-                Download Invoice
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.button}
-                startIcon={<TwitterIcon />}
-              >
-                Share
+                Print this page
               </Button>
             </div>
             <div className={classes.content}>
@@ -317,7 +308,6 @@ export default function HorizontalLinearStepper() {
         {getStepTitle(activeStep)}
       </Typography>
       <div>
-
         <div>
           {/* Form Content */}
           <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>

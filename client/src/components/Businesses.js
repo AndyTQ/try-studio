@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { connect } from 'react-redux';
 import { getBusinesses } from '../redux/actions/dashActions';
@@ -11,15 +11,23 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Table from './Table';
+import Modal from './Modal';
+import BusinessIcon from '@material-ui/icons/Business';
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 345,
-    margin: 10,
+    display: 'flex',
+    flexWrap: 'wrap'
+  },
+  content: {
+    width: 345,
+    margin: 20,
+    boxShadow: "0 0 14px 0 rgba(53,64,82,.1)",
   },
   card: {
     whiteSpace: "pre",
-  }
+  },
 });
 
 const image = {
@@ -29,17 +37,22 @@ const image = {
 
 const Businesses = props => {
   const { businesses, getBusinesses } = props;
+
+  const [ showLicense, setShowLicense ] = useState(false);
+  const [ showNewBusiness, setShowNewBusiness ] = useState(false);
+
   const classes = useStyles();
+
+
 
   useEffect(() => {
     getBusinesses();
   }, []);
 
-
   return (
-    <div>
+    <div className={classes.root}>
       {businesses.map(business => (
-        <Card key={business.name} className={classes.root}>
+        <Card key={business.name} className={classes.content}>
           <CardActionArea>
             <CardMedia
               component="img"
@@ -59,15 +72,26 @@ const Businesses = props => {
             </CardContent>
           </CardActionArea>
           <CardActions>
-            <Button size="small" color="primary">
-              Licenses
-            </Button>
-            <Button size="small" color="primary">
-              Edit
-            </Button>
+            <Button variant='outlined' color='primary' onClick={() => {setShowLicense(true);}}> Licenses </Button>
+            <Modal name="Licenses" open={showLicense} handleClose={() => {setShowLicense(false);}}> 
+              <Table title="Licenses"></Table>
+            </Modal>
           </CardActions>
         </Card>
       ))}
+      <Card className={classes.content}>
+        <Button onClick={() => {setShowNewBusiness(true);}} style={{height: '100%', width: '100%'}}>
+          <div align='center'>
+            <BusinessIcon style={{ fontSize: '150px', color: 'grey'}}/>
+            <Typography align='center' style={{color: 'grey'}}gutterBottom variant="h5" component="h2">
+            Add A New Business
+            </Typography>
+          </div>
+        </Button>
+        <Modal name="Licenses" open={showNewBusiness} handleClose={() => {setShowNewBusiness(false);}}> 
+          <Table title="Licenses"></Table>
+        </Modal>
+      </Card>
     </div>
   );
 }

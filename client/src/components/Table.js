@@ -4,14 +4,16 @@ import TablePagination from '@material-ui/core/TablePagination';
 
 import { forwardRef } from 'react';
 
-
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
+
 import Check from '@material-ui/icons/Check';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 import Clear from '@material-ui/icons/Clear';
+
 import DeleteOutline from '@material-ui/icons/DeleteOutline';
+
 import Edit from '@material-ui/icons/Edit';
 import FilterList from '@material-ui/icons/FilterList';
 import FirstPage from '@material-ui/icons/FirstPage';
@@ -22,7 +24,11 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
-import Add from '@material-ui/icons/Add'
+import Add from '@material-ui/icons/Add';
+import UpdateIcon from '@material-ui/icons/Update';
+
+import Modal from './Modal';
+import NewLicenseStepper from './NewLicenseStepper'
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -45,7 +51,6 @@ const tableIcons = {
 };
 
 const Table = ({ title, licenses }) => {
- 
   const [state, setState] = React.useState({
     columns: [
       { title: 'License ID', field: 'licenseId', type: 'string' },
@@ -56,6 +61,9 @@ const Table = ({ title, licenses }) => {
     ],
     data: licenses,
   });
+
+  const [openNew, setOpenNew] = React.useState(false);
+  const [openAssess, setOpenAssess] = React.useState(false);
 
   useEffect(() => {
     setState({
@@ -87,17 +95,26 @@ const Table = ({ title, licenses }) => {
           <div>
             <MTableToolbar {...props}
               title={
-                <Typography component="h1" variant="h6" color="inherit">
+                <Typography component="h1" variant="h6" color="inherit" style={{display: 'flex'}}>
                   {title}
                   {/* Attempted to use Redirect and history.push but did not work. */}
                   <Button
                     variant="contained"
                     color="secondary"
                     startIcon={<Add />}
-                    href="/newlicense"
-                    style={{ marginLeft: '15px' }}
-                  >
-                    Add New
+                    onClick={() => {setOpenNew(true)}}
+                    style={{marginLeft:15}}>
+                    Add
+                  </Button>
+                  <Modal name="Licenses" open={openNew} handleClose={() => {setOpenNew(false)}}> 
+                    <NewLicenseStepper />
+                  </Modal>
+                  <Button
+                    color="secondary"
+                    variant="contained"
+                    startIcon={<UpdateIcon />}
+                    style={{marginLeft:15}}>
+                    Reassess
                   </Button>
                 </Typography>
               }
@@ -114,7 +131,6 @@ const Table = ({ title, licenses }) => {
           color: 'primary',
         },
         exportButton: true,
-        pageSize: 11, // Some number large enough so that it expands to the entire page...
       }}
     />
   );

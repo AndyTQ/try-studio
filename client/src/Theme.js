@@ -4,7 +4,8 @@ const theme = createMuiTheme({
   palette: {
     text: {
       primary: "#000000",
-      secondary: "#4D4F5C"
+      secondary: "#4D4F5C",
+      info: "grey",
     },
     primary: {
         main: '#1976D2',
@@ -13,8 +14,12 @@ const theme = createMuiTheme({
         main: '#2196F3',
     },
     background: {
-      default: "#f7f9fc"
-    }
+        default: "#f7f9fc"
+    },
+    green: { // doesnt work - defaults to a grey button
+        main: '#388E3C',
+        contrastText: '#fff',
+    },
   },
   typography: {
     fontFamily: "Nunito",

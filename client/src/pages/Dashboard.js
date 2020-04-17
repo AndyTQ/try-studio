@@ -9,8 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 
-import Table from '../components/Table';
-import { NumberCard, ProgressCard } from '../components/Cards';
+import { Businesses } from '../components';
 import { getUser } from '../redux/actions/authActions';
 
 
@@ -48,22 +47,17 @@ const Dashboard = props => {
           Welcome back, {(currUser == null ? '(Loading your name...)' : currUser.firstName)}. Time to play some music for your business, or get a new license!
         </Typography>
         <Divider className={classes.divider} />
-      <Grid container spacing={3}>
-        <Grid item xs={4}>
-          <NumberCard title='Licensed Songs Played' number={103} increase={23} info='Since last month' imageName='album'/>
+        <Grid container spacing={3}>
+          {/* <Grid item xs={4}>
+            <NumberCard title='Total money spent' number={103} increase={23} info='Since last month' imageName='music_time'/>
+          </Grid>
+          <Grid item xs={4}>
+            <NumberCard title='Total money spent' number={103} increase={23} info='Since last month' imageName='music_time'/>
+          </Grid> */}
+          <Grid item xs={12}>
+            <Businesses />
+          </Grid>
         </Grid>
-        <Grid item xs={4}>
-          <NumberCard title='Total Hours Played' number={535} increase={5} info='Since last month' imageName='music_time' />
-        </Grid>
-        <Grid item xs={4}>
-          <ProgressCard />
-        </Grid>
-        <Grid item xs={12}>
-          <div className={classes.table}>
-            <Table title = "Recent licenses" />
-          </div>
-        </Grid>
-      </Grid>
     </div>
   );
 }
