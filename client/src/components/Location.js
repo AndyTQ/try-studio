@@ -36,11 +36,12 @@ export default function Location(props) {
   const [options, setOptions] = React.useState([]);
   const [curAddress, setCurAddress] = React.useState('');
   const loaded = React.useRef(false);
+  const API = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDVkPCtEZpk_6NrNsqZqpbCW7dtBYTFHII&libraries=places';
 
   if (typeof window !== 'undefined' && !loaded.current) {
     if (!document.querySelector('#google-maps')) {
       loadScript(
-        'https://maps.googleapis.com/maps/api/js?key=AIzaSyDVkPCtEZpk_6NrNsqZqpbCW7dtBYTFHII&libraries=places',
+        API,
         document.querySelector('head'),
         'google-maps',
       );
@@ -58,7 +59,6 @@ export default function Location(props) {
     if (value) {
       setCurAddress(value.description);
       props.onChange(value.description);
-
     }
   };
 
@@ -121,7 +121,6 @@ export default function Location(props) {
           option.structured_formatting.main_text,
           matches.map((match) => [match.offset, match.offset + match.length]),
         );
-
         return (
           <Grid container alignItems="center">
             <Grid item>
@@ -133,7 +132,6 @@ export default function Location(props) {
                   {part.text}
                 </span>
               ))}
-
               <Typography variant="body2" color="textSecondary">
                 {option.structured_formatting.secondary_text}
               </Typography>

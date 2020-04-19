@@ -3,10 +3,8 @@ export const getBusinesses = () => {
     const firebase = getFirebase();
     const ref = firebase.firestore();
     const usersRef = ref.collection("users");
-    const userRef = usersRef.doc(firebase.auth().currentUser.uid);
     const businessesRef = ref.collection("businesses");
-    
-    userRef.onSnapshot(doc => {
+    usersRef.doc(firebase.auth().currentUser.uid).onSnapshot(doc => {
       let businessIds;
       let businesses = [];
       businessIds = doc.data().businesses;
@@ -15,7 +13,6 @@ export const getBusinesses = () => {
           console.log("Updating getBusiness from redux...")
           snapshot.forEach(doc => {
           businesses.push(doc.data());
-          
         });
       }).catch(err => {
         dispatch({type: 'GET_BUSINESSES_ERROR', err});

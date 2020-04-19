@@ -56,14 +56,19 @@ const tableIcons = {
 };
 
 const Table = ({ title, licenses, businessId }) => {
+
+  const buildColumn = (title, field, type) => {
+    return {titie: title, field: field, type: type}
+  }
+
   const [allowAdd, setAllowAdd] = useState(false);
   const [state, setState] = React.useState({
     columns: [
-      { title: 'License ID', field: 'licenseId', type: 'string' },
-      { title: 'Business ID', field: 'business', type: 'string' },
-      { title: 'Licensing Company', field: 'cmo', type: 'string' },
-      { title: 'Price', field: 'price', type: 'numeric' },
-      { title: 'Registration Date', field: 'date', type: 'string' }
+      buildColumn('License ID', 'licenseId', 'string'),
+      buildColumn('Business ID', 'business', 'string'),
+      buildColumn('Licensing Company', 'cmo', 'string'),
+      buildColumn('Price', 'price', 'numberic'),
+      buildColumn('Registration Date', 'date', 'string'),
     ],
     data: licenses,
   });
@@ -72,23 +77,26 @@ const Table = ({ title, licenses, businessId }) => {
   const [openAssess, setOpenAssess] = React.useState(false);
   const firebase = useFirebase();
   const firestore = useFirestore();
+  let location = useLocation();
 
-  console.log(openNew);
-  useEffect(() => {
-    setState({
-      ...state,
-      data: licenses,
-    });
+  const updateAllowance = () => {
     let uid = firebase.auth().currentUser.uid;
     firestore.collection('users').doc(uid).get().then((doc) => {
       let userData = doc.data();
-      debugger;
       if (userData.licenses.length < 10){
         setAllowAdd(true);
       } else {
         setAllowAdd(false);
       }
     })
+  }
+
+  useEffect(() => {
+    setState({
+      ...state,
+      data: licenses,
+    });
+    updateAllowance();
   }, [licenses]);
 
   const openHandler = useCallback(() => {
@@ -98,8 +106,6 @@ const Table = ({ title, licenses, businessId }) => {
   const closeHandler = useCallback(() =>{ 
     setOpenNew(false);
   });
-
-  let location = useLocation();
   
   const displayToolbar = () => {
     if (location.pathname != "/licenses"){
