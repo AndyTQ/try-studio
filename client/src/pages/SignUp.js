@@ -15,13 +15,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom'; // for navigating back to sign-in page if there's no auth.
 import { signUp } from '../redux/actions/authActions';
 
-const Copyright = () => (
-  <Typography variant="body2" color="textSecondary" align="center">
-    {'Copyright © Try Studio '}
-    {new Date().getFullYear()}
-    {'.'}
-  </Typography>
-);
+
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -157,7 +151,6 @@ const SignUp = props => {
         </form>
       </div>
       <Box mt={5}>
-        <Copyright />
       </Box>
     </Container>
   );
