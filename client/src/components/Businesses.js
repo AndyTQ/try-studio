@@ -34,7 +34,7 @@ const useStyles = makeStyles({
 
 const image = {
   concert: process.env.PUBLIC_URL + "/concert.jpg",
-  festival: process.env.PUBLIC_URL + "/festival.jpg",
+  festival: process.env.PUBLIC_URL + "/festival.jpeg",
   danceStudio: process.env.PUBLIC_URL + "/dance.jpg",
   indieCafe: "https://images.unsplash.com/photo-1497515114629-f71d768fd07c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2862&q=80",
   karaoke: "https://images.unsplash.com/photo-1485579149621-3123dd979885?ixlib=rb-1.2.1&auto=format&fit=crop&w=2978&q=80",

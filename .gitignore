@@ -7,6 +7,10 @@ node_modules
 
 # testing
 /coverage
+/client/coverage
+/server/coverage
+/client/.nyc_output
+/server/.nyc_output
 
 # production
 build

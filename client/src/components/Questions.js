@@ -182,7 +182,7 @@ export default function Questions({ businessId }) {
 
   const newBusiness = (<form onSubmit={handleSubmit(onSubmit)} ref={(ref) => { setbusinessForm(ref); }}>
   <div className={classes.questionCard}>
-    <label className={classes.questionTitle}>What is the name of your venue?</label>
+    <label className={classes.questionTitle}>Please enter the name of your venue.</label>
     <Controller
       as={
         <div className={classes.content}>
