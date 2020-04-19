@@ -196,26 +196,30 @@ export default function Questions({ businessId }) {
   )
   }
 
+  const yesNoPanel = (classes) => {
+    return (<div className={classes.content}>
+      <RadioGroup aria-label="gender" name="gender1">
+        <FormControlLabel
+          value="1"
+          control={<Radio />}
+          label="Yes"
+        />
+        <FormControlLabel
+          value="0"
+          control={<Radio />}
+          label="No"
+        />
+      </RadioGroup>
+  </div>)
+  }
+
   const newLicense = regionData ? (<form onSubmit={handleSubmit(onSubmit)} ref={(ref) => { setlicenseForm(ref); }}>
   {regionData.questionnaire.map((question) => 
     <div className={classes.questionCard}>
     <label className={classes.questionTitle}>{question}</label>
       <Controller
         as={
-          <div className={classes.content}>
-              <RadioGroup aria-label="gender" name="gender1">
-                <FormControlLabel
-                  value="1"
-                  control={<Radio />}
-                  label="Yes"
-                />
-                <FormControlLabel
-                  value="0"
-                  control={<Radio />}
-                  label="No"
-                />
-              </RadioGroup>
-          </div>
+          yesNoPanel(classes)
         }
         name={question}
         control={control}
@@ -397,16 +401,7 @@ export default function Questions({ businessId }) {
           data.licenses = [];
           data.id = newId;
           businesses.doc(newId).set(data).then(()=>{
-              let uid = firebase.auth().currentUser.uid;
-              firestore.collection('users').doc(uid).get().then((doc) =>{ 
-                let userData = doc.data(); 
-                userData.businesses.push(newId);
-                firestore.collection('users').doc(uid).set(userData).then((doc) => {
-                    setActiveStep(2);
-                  }
-                );
-              }
-              );
+            addUserData("businesses", newId)
             }
           );
         } else {
@@ -414,20 +409,12 @@ export default function Questions({ businessId }) {
           let y = date.getFullYear();
           let m = date.getMonth() + 1;
           let d = date.getDate();
-          let newLicenseId = licenses.doc().id;
+          let newId = licenses.doc().id;
           data.business = businessId;
           data.date = m + '/' + d + '/' + y;
-          licenses.doc(newLicenseId).set(data)
+          licenses.doc(newId).set(data)
           .then(()=>{
-              let uid = firebase.auth().currentUser.uid;
-              firestore.collection('users').doc(uid).get().then((doc) => {
-                let userData = doc.data();
-                userData.licenses.push(newLicenseId);
-                firestore.collection('users').doc(uid).set(userData).then((doc) => {
-                  setActiveStep(2);
-                }
-                );
-              })
+              addUserData("licenses", newId)
             }
           )
           }
@@ -439,6 +426,19 @@ export default function Questions({ businessId }) {
         break;
     }
   };
+
+  const addUserData = (type, newId) => {
+    let uid = firebase.auth().currentUser.uid;
+    firestore.collection('users').doc(uid).get().then((doc) =>{ 
+      let userData = doc.data(); 
+      userData[type].push(newId);
+      firestore.collection('users').doc(uid).set(userData).then((doc) => {
+          setActiveStep(2);
+        }
+      );
+    }
+    );
+  }
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
