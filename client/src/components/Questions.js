@@ -150,6 +150,52 @@ export default function Questions({ businessId }) {
     }
   }, []);
 
+  const nameField = (classes, errors, control,register) => {
+    return(
+    <div className={classes.questionCard}>
+      <label className={classes.questionTitle}>Please enter the name of your business.</label>
+      <Controller
+        as={
+          <div className={classes.content}>
+            <FormControlLabel
+              control={<TextField variant="outlined" label="Type the name here" style={{width: 300, marginLeft: 10}}/>}
+            />
+          </div>
+        }
+        name="name"
+        control={control}
+        register={register}
+      />
+      {errors.name && errors.name.type === "required" && (
+        <Typography variant="body1" color="error"> This field is required</Typography>
+      )}
+    </div>
+    );
+  }
+
+  const sizeField = (classes, errors, control,register) => {
+    return(
+    <div className={classes.questionCard}>
+    <label className={classes.questionTitle}>What's your place's size (in m²)?</label>
+    <Controller
+      as={
+        <div className={classes.content}>
+          <FormControlLabel
+            control={<TextField variant="outlined" label="Enter your venue's size" style={{width: 300, marginLeft: 10}}/>}
+          />
+        </div>
+      }
+      name="size"
+      control={control}
+      register={register}
+    />
+    {errors.size && errors.size.type === "pattern" && (
+      <Typography variant="body1" color="error"> Your venue's size must be an integer</Typography>
+    )}
+  </div>
+  )
+  }
+
   const newLicense = regionData ? (<form onSubmit={handleSubmit(onSubmit)} ref={(ref) => { setlicenseForm(ref); }}>
   {regionData.questionnaire.map((question) => 
     <div className={classes.questionCard}>
@@ -181,42 +227,8 @@ export default function Questions({ businessId }) {
 </form>) : <></>
 
   const newBusiness = (<form onSubmit={handleSubmit(onSubmit)} ref={(ref) => { setbusinessForm(ref); }}>
-  <div className={classes.questionCard}>
-    <label className={classes.questionTitle}>Please enter the name of your business.</label>
-    <Controller
-      as={
-        <div className={classes.content}>
-          <FormControlLabel
-            control={<TextField variant="outlined" label="Type the name here" style={{width: 300, marginLeft: 10}}/>}
-          />
-        </div>
-      }
-      name="name"
-      control={control}
-      register={register}
-    />
-    {errors.name && errors.name.type === "required" && (
-      <Typography variant="body1" color="error"> This field is required</Typography>
-    )}
-  </div>
-  <div className={classes.questionCard}>
-    <label className={classes.questionTitle}>What's your place's size (in m²)?</label>
-    <Controller
-      as={
-        <div className={classes.content}>
-          <FormControlLabel
-            control={<TextField variant="outlined" label="Enter your venue's size" style={{width: 300, marginLeft: 10}}/>}
-          />
-        </div>
-      }
-      name="size"
-      control={control}
-      register={register}
-    />
-    {errors.size && errors.size.type === "pattern" && (
-      <Typography variant="body1" color="error"> Your venue's size must be an integer</Typography>
-    )}
-  </div>
+  {nameField(classes, errors, control,register)}
+  {sizeField(classes, errors, control,register)}
   <div className={classes.questionCard}>
     <label>Where is your business?</label>
     <Controller
