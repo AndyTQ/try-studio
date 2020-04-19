@@ -97,7 +97,15 @@ export default function Location(props) {
   }, [inputValue, fetch]);
 
   return (
-    <Autocomplete
+    <>
+    {AutocompleteComponent(handleAddress, options, handleChange, classes)}
+    </>
+  );
+}
+
+const AutocompleteComponent = (handleAddress, options, handleChange, classes) => {
+  return (
+  <Autocomplete
       id="google-map-demo"
       onChange={handleAddress}
       style={{ width: 300 }}
@@ -140,5 +148,5 @@ export default function Location(props) {
         );
       }}
     />
-  );
+  )
 }
