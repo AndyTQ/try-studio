@@ -108,7 +108,7 @@ const Table = ({ title, licenses, businessId }) => {
   });
   
   const displayToolbar = () => {
-    if (location.pathname != "/licenses"){
+    if (location.pathname != "/licenses" && location.pathname != "/playlists"){
       if (allowAdd){
         return (<div>
         <Button

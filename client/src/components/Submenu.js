@@ -23,9 +23,52 @@ function ListItemLink(props) {
   return <ListItem button component="a" {...props} />;
 }
 
+const streamingServicePanel = () => {
+  return(
+    <div>
+        <ListItem button>
+          <ListItemIcon>
+                <SpotifyIcon />
+              </ListItemIcon>
+              <ListItemText primary="Spotify" />
+            </ListItem>
+            <ListItem button disabled='true'>
+              <ListItemIcon>
+                <AppleIcon />
+              </ListItemIcon>
+              <ListItemText primary="Apple Music (Coming)" />
+            </ListItem>
+        <ListItem button disabled='true'>
+        <ListItemIcon>
+          <YouTubeIcon />
+        </ListItemIcon>
+        <ListItemText primary="Youtube Music (Coming)" />
+        </ListItem>
+    </div>
+  );
+}
+
+const playListPanel = () => {
+  return (
+    <div>
+    <ListItemLink href="#recent">
+    <ListItemIcon>
+      <RecentIcon />
+    </ListItemIcon>
+    <ListItemText primary="Recent" />
+  </ListItemLink>
+  <ListItemLink href="#favourite">
+    <ListItemIcon>
+      <FavoriteIcon />
+    </ListItemIcon>
+    <ListItemText primary="Favourite" />
+  </ListItemLink>
+  </div>
+  )
+}
+
 export default function Submenu() {
   const classes = useStyles();
-
   return (
     <div className={classes.root}>
       <List
@@ -36,24 +79,7 @@ export default function Submenu() {
         }
         component="nav"
         aria-label="main mailbox folders">
-        <ListItem button>
-          <ListItemIcon>
-            <SpotifyIcon />
-          </ListItemIcon>
-          <ListItemText primary="Spotify" />
-        </ListItem>
-        <ListItem button disabled='true'>
-          <ListItemIcon>
-            <AppleIcon />
-          </ListItemIcon>
-          <ListItemText primary="Apple Music (Coming)" />
-        </ListItem>
-        <ListItem button disabled='true'>
-          <ListItemIcon>
-            <YouTubeIcon />
-          </ListItemIcon>
-          <ListItemText primary="Youtube Music (Coming)" />
-        </ListItem>
+        {streamingServicePanel()}
       </List>
       <Divider />
       <List
@@ -62,18 +88,7 @@ export default function Submenu() {
             Playlists
         </ListSubheader>
         } component="nav" aria-label="secondary mailbox folders">
-        <ListItemLink href="#recent">
-          <ListItemIcon>
-            <RecentIcon />
-          </ListItemIcon>
-          <ListItemText primary="Recent" />
-        </ListItemLink>
-        <ListItemLink href="#favourite">
-          <ListItemIcon>
-            <FavoriteIcon />
-          </ListItemIcon>
-          <ListItemText primary="Favourite" />
-        </ListItemLink>
+          {playListPanel()}
       </List>
     </div>
   );
