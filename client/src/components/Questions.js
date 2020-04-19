@@ -182,12 +182,12 @@ export default function Questions({ businessId }) {
 
   const newBusiness = (<form onSubmit={handleSubmit(onSubmit)} ref={(ref) => { setbusinessForm(ref); }}>
   <div className={classes.questionCard}>
-    <label className={classes.questionTitle}>Please enter the name of your venue.</label>
+    <label className={classes.questionTitle}>Please enter the name of your business.</label>
     <Controller
       as={
         <div className={classes.content}>
           <FormControlLabel
-            control={<TextField variant="outlined" label="Enter your venue's name" style={{width: 300, marginLeft: 10}}/>}
+            control={<TextField variant="outlined" label="Type the name here" style={{width: 300, marginLeft: 10}}/>}
           />
         </div>
       }
@@ -200,7 +200,7 @@ export default function Questions({ businessId }) {
     )}
   </div>
   <div className={classes.questionCard}>
-    <label className={classes.questionTitle}>What is the size of your venue (in m²)?</label>
+    <label className={classes.questionTitle}>What's your place's size (in m²)?</label>
     <Controller
       as={
         <div className={classes.content}>
