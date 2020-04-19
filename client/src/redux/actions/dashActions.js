@@ -1,9 +1,8 @@
 export const getBusinesses = () => {
   return (dispatch, getState, { getFirebase }) => {
     const firebase = getFirebase();
-    const ref = firebase.firestore();
-    const usersRef = ref.collection("users");
-    const businessesRef = ref.collection("businesses");
+    const usersRef = firebase.firestore().collection("users");
+    const businessesRef = firebase.firestore().collection("businesses");
     usersRef.doc(firebase.auth().currentUser.uid).onSnapshot(doc => {
       let businessIds;
       let businesses = [];
