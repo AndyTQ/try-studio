@@ -33,6 +33,7 @@ export const getUser = () => {
         firestore.collection('users').doc(firebase.auth().currentUser.uid).get().then(
             (doc) => {
                 if (doc.exists){
+                    console.log("test")
                     currUser = doc.data();
                     dispatch({type: 'RETRIEVE_SUCCESS', currUser});
                 }
@@ -63,6 +64,8 @@ export const signUp = (newUser) => {
             return firestore.collection('users').doc(resp.user.uid).set({
                 firstName: newUser.firstName,
                 lastName: newUser.lastName,
+                licenses: [],
+                businesses: []
             }).then(() => {
                 dispatch({ type: 'SIGNUP_SUCCESS'})
             }).catch(err => {

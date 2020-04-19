@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback, useState} from 'react';
 import MaterialTable, { MTableToolbar } from 'material-table';
 import TablePagination from '@material-ui/core/TablePagination';
 
@@ -28,7 +28,12 @@ import Add from '@material-ui/icons/Add';
 import UpdateIcon from '@material-ui/icons/Update';
 
 import Modal from './Modal';
-import NewLicenseStepper from './NewLicenseStepper'
+import Questions from './Questions';
+
+import { useLocation } from 'react-router-dom'
+
+import { useFirestore, useFirebase } from 'react-redux-firebase'
+
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -50,29 +55,86 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 };
 
-const Table = ({ title, licenses }) => {
+const Table = ({ title, licenses, businessId }) => {
+  const [allowAdd, setAllowAdd] = useState(false);
   const [state, setState] = React.useState({
     columns: [
       { title: 'License ID', field: 'licenseId', type: 'string' },
-      { title: 'Business', field: 'business', type: 'string' },
-      { title: 'Expires', field: 'expires', type: 'string' },
+      { title: 'Business ID', field: 'business', type: 'string' },
+      { title: 'Licensing Company', field: 'cmo', type: 'string' },
       { title: 'Price', field: 'price', type: 'numeric' },
-      { title: 'Plan', field: 'plan', type: 'string' }
+      { title: 'Registration Date', field: 'date', type: 'string' }
     ],
     data: licenses,
   });
 
   const [openNew, setOpenNew] = React.useState(false);
   const [openAssess, setOpenAssess] = React.useState(false);
+  const firebase = useFirebase();
+  const firestore = useFirestore();
 
+  console.log(openNew);
   useEffect(() => {
     setState({
       ...state,
       data: licenses,
     });
+    let uid = firebase.auth().currentUser.uid;
+    firestore.collection('users').doc(uid).get().then((doc) => {
+      let userData = doc.data();
+      debugger;
+      if (userData.licenses.length < 10){
+        setAllowAdd(true);
+      } else {
+        setAllowAdd(false);
+      }
+    })
   }, [licenses]);
 
+  const openHandler = useCallback(() => {
+    setOpenNew(true);
+  });
+
+  const closeHandler = useCallback(() =>{ 
+    setOpenNew(false);
+  });
+
+  let location = useLocation();
+  
+  const displayToolbar = () => {
+    if (location.pathname != "/licenses"){
+      if (allowAdd){
+        return (<div>
+        <Button
+          variant="contained"
+          color="secondary"
+          startIcon={<Add />}
+          onClick={openHandler}
+          style={{marginLeft:15}}>
+          Add License
+        </Button>
+    
+        <Button
+          disabled={true}
+          color="secondary"
+          variant="contained"
+          startIcon={<UpdateIcon />}
+          style={{marginLeft:15}}>
+          Reassess(Soon!)
+        </Button>
+        </div>);
+      }
+      else{
+        return (<Typography variant="body1" style={{marginTop: 5, marginLeft: 20, color: "grey"}}> You have reached the limit of adding new licenses. </Typography>)
+      }
+    } 
+    else {
+      return <Typography style={{marginTop: 5, marginLeft: 20, color: "grey"}}variant="body1"> To add a new license, go to Businesses > Select a business > Add New</Typography>
+    }
+  }
+
   return (
+    <div>
     <MaterialTable
       icons={tableIcons}
       title="Licenses"
@@ -82,40 +144,13 @@ const Table = ({ title, licenses }) => {
         boxShadow: 'rgba(53, 64, 82, 0.05) 0px 0px 14px 0px',
       }}
       components={{
-        Pagination: props => (
-          <div>
-            <TablePagination
-              {...props}
-              rowsPerPageOptions={[]}
-              rowsPerPage={10}
-            />
-          </div>
-        ),
         Toolbar: props => ( // Override the original toolbar
           <div>
             <MTableToolbar {...props}
               title={
                 <Typography component="h1" variant="h6" color="inherit" style={{display: 'flex'}}>
                   {title}
-                  {/* Attempted to use Redirect and history.push but did not work. */}
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    startIcon={<Add />}
-                    onClick={() => {setOpenNew(true)}}
-                    style={{marginLeft:15}}>
-                    Add
-                  </Button>
-                  <Modal name="Licenses" open={openNew} handleClose={() => {setOpenNew(false)}}> 
-                    <NewLicenseStepper />
-                  </Modal>
-                  <Button
-                    color="secondary"
-                    variant="contained"
-                    startIcon={<UpdateIcon />}
-                    style={{marginLeft:15}}>
-                    Reassess
-                  </Button>
+                  {displayToolbar()}
                 </Typography>
               }
             />
@@ -133,7 +168,11 @@ const Table = ({ title, licenses }) => {
         exportButton: true,
       }}
     />
+    <Modal name="Licenses" open={openNew} handleClose={closeHandler}> 
+      <Questions businessId={businessId} />
+    </Modal>
+    </div>
   );
 };
 
-export default Table;
+export default React.memo(Table);

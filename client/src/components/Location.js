@@ -58,7 +58,7 @@ export default function Location(props) {
     if (value) {
       setCurAddress(value.description);
       props.onChange(value.description);
-      console.log(curAddress);
+
     }
   };
 

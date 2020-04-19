@@ -11,9 +11,11 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import Table from './Table';
+import LicenseTable from './LicenseTable';
 import Modal from './Modal';
 import BusinessIcon from '@material-ui/icons/Business';
+
+import Questions from './Questions';
 
 const useStyles = makeStyles({
   root: {
@@ -31,7 +33,10 @@ const useStyles = makeStyles({
 });
 
 const image = {
-  cafe: "https://images.unsplash.com/photo-1497515114629-f71d768fd07c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2862&q=80",
+  concert: process.env.PUBLIC_URL + "/concert.jpg",
+  festival: process.env.PUBLIC_URL + "/festival.jpg",
+  danceStudio: process.env.PUBLIC_URL + "/dance.jpg",
+  indieCafe: "https://images.unsplash.com/photo-1497515114629-f71d768fd07c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2862&q=80",
   karaoke: "https://images.unsplash.com/photo-1485579149621-3123dd979885?ixlib=rb-1.2.1&auto=format&fit=crop&w=2978&q=80",
 }
 
@@ -40,12 +45,12 @@ const Businesses = props => {
 
   const [ showLicense, setShowLicense ] = useState(false);
   const [ showNewBusiness, setShowNewBusiness ] = useState(false);
+  const [ currBusiness, setCurrBusiness ] = useState(null);
 
   const classes = useStyles();
 
-
-
   useEffect(() => {
+    console.log("Business Rerendered!");
     getBusinesses();
   }, []);
 
@@ -56,29 +61,30 @@ const Businesses = props => {
           <CardActionArea>
             <CardMedia
               component="img"
-              alt="Café"
+              alt="photo"
               height="140"
               image={image[business.type]}
-              title="Café"
+              title="photo"
             />
             <CardContent>
               <Typography gutterBottom variant="h5" component="h2">
                 {business.name}
               </Typography>
               <Typography className={classes.card} variant="body2" color="textSecondary" component="p">
-                {`${business.address}\n`}
-                {`Licenses: ${business.licenses.length}`}
+                {`${business.location}\n`}
+                {`ID: ${business.id}`}
               </Typography>
             </CardContent>
           </CardActionArea>
           <CardActions>
-            <Button variant='outlined' color='primary' onClick={() => {setShowLicense(true);}}> Licenses </Button>
-            <Modal name="Licenses" open={showLicense} handleClose={() => {setShowLicense(false);}}> 
-              <Table title="Licenses"></Table>
-            </Modal>
+            <Button variant='outlined' color='primary' onClick={() => {setCurrBusiness(business); setShowLicense(true);}}> Licenses </Button>
           </CardActions>
         </Card>
       ))}
+      {currBusiness ? 
+      <Modal name="Licenses" open={showLicense} handleClose={() => {setShowLicense(false);}}> 
+        <LicenseTable title="Licenses" businessId={currBusiness.id}></LicenseTable>
+      </Modal> : <></>}
       <Card className={classes.content}>
         <Button onClick={() => {setShowNewBusiness(true);}} style={{height: '100%', width: '100%'}}>
           <div align='center'>
@@ -89,7 +95,7 @@ const Businesses = props => {
           </div>
         </Button>
         <Modal name="Licenses" open={showNewBusiness} handleClose={() => {setShowNewBusiness(false);}}> 
-          <Table title="Licenses"></Table>
+          <Questions />
         </Modal>
       </Card>
     </div>

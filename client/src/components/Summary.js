@@ -25,17 +25,32 @@ function createData(key, value) {
   return { key, value };
 }
 
-const rows = [
-  createData('License ID', '1CR482FZCVM'),
-  createData('Licensing Company', 'SOCAN'),
-  createData('Validity', '1 year'),
-  createData('Type of license', 'Dance Studio'),
-  createData('Location', 'Bahen Centre for Information Techonology, Toronto, ON, Canada'),
-  createData('Price', '39.99 CAD')
-];
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
-export default function LicenseSummary() {
+
+export default function Summary({data, summaryType}) {
   const classes = useStyles();
+  const keys = Object.keys(data);
+  const rows = [];
+
+
+  // Object.keys(data).foreach((key) => {
+  //   rows.push(createData(key, data[key]))
+  // });
+  keys.forEach(function (key){
+    switch (key){
+      case "licenses":
+        break;
+      case "cmo":
+        rows.push(createData(capitalizeFirstLetter("Licensing Company"), data[key]));
+        break;
+      default:
+        rows.push(createData(capitalizeFirstLetter(key), data[key]));
+        break;
+    }
+  })
 
   return (
     <div align='center' className={classes.content}>
