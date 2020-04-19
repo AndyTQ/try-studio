@@ -28,7 +28,7 @@ jobs:
         NODE_ENV: test
     - name: "Upload to CodeClimate"
       env:
-        CC_TEST_REPORTER_ID: 41b92fdfe2a8d87abdcab0e4d79717d5a90175a04d7da644d4ba37f462c5051e
+        CC_TEST_REPORTER_ID: 1f39d77da93511f5e7b4357d2dbee38c1d98c5e784bebe1c4d26ede0eab7d152
       run: |
         export GIT_BRANCH="${GITHUB_REF##*/}"
         curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
