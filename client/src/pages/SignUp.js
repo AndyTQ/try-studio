@@ -65,16 +65,32 @@ const SignUp = props => {
   }
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign up
-        </Typography>
-        <form className={classes.form} onSubmit={handleSubmit}>
+    <>{signUpComponent(classes, handleChange, handleSubmit, authError)}</>
+  );
+};
+
+const signUpComponent = (classes, handleChange, handleSubmit, authError) => {
+  return (
+  <Container component="main" maxWidth="xs">
+  <CssBaseline />
+  <div className={classes.paper}>
+    <Avatar className={classes.avatar}>
+      <LockOutlinedIcon />
+    </Avatar>
+    <Typography component="h1" variant="h5">
+      Sign up
+    </Typography>
+    {signUpForm(classes, handleChange, handleSubmit, authError)}
+  </div>
+  <Box mt={5}>
+  </Box>
+  </Container>
+  )
+}
+
+const signUpForm = (classes, handleChange, handleSubmit, authError) =>{
+  return (
+  <form className={classes.form} onSubmit={handleSubmit}>
           <Grid container spacing={2} justify="center">
             <Grid item xs={12}>
               <Typography variant="body2" color="error" align="center">
@@ -149,12 +165,8 @@ const SignUp = props => {
             </Grid>
           </Grid>
         </form>
-      </div>
-      <Box mt={5}>
-      </Box>
-    </Container>
-  );
-};
+    );
+}
 
 const mapStateToProps = (state) => {
   return {
