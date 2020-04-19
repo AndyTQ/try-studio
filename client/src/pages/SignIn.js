@@ -90,11 +90,7 @@ const SignInSide = props => {
   const classes = useStyles(Theme);
   const { auth, authError } = props;
 
-  const [state, setState] = useState({
-      email: '',
-      password: '',
-    }
-  );
+  const [state, setState] = useState({email: '', password: '',});
 
   const handleChange = (e) => {
     setState({
@@ -135,7 +131,18 @@ const SignInSide = props => {
             { authError ? <span>{ authError }</span> : null }
           </Typography>
           <form className={classes.form} onSubmit={handleSubmit}>
-            <TextField
+            {signInFormComponent(handleChange, classes)}
+          </form>
+        </div>
+      </Grid>
+    </Grid>
+  );
+};
+
+const signInFormComponent = (handleChange, classes) => {
+  return (
+    <div>
+    <TextField
               variant="outlined"
               margin="normal"
               required
@@ -187,12 +194,9 @@ const SignInSide = props => {
             <Box mt={5}>
               <Copyright />
             </Box>
-          </form>
-        </div>
-      </Grid>
-    </Grid>
+          </div>
   );
-};
+}
 
 const mapStateToProps = (state) => {
   return {
