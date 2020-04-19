@@ -34,7 +34,6 @@ const Settings = (props) => {
     getUser();
   }, []);
   
-
   return (
     <div className={classes.root}>
       <div className={classes.section}>
@@ -44,12 +43,7 @@ const Settings = (props) => {
         <Divider className={classes.divider} />
         {/* content for user settings*/}
         <div>
-          <Typography variant="h6" color="inherit" noWrap>
-            Name
-          </Typography>
-          <Typography variant="body1" color="inherit" noWrap>
-            {currUser ? currUser.firstName + ' ' + currUser.lastName : ''}
-          </Typography>
+          {nameSetting()}
           <img
             src={process.env.PUBLIC_URL + '/construction.png'}
             alt="Logo"
@@ -59,6 +53,19 @@ const Settings = (props) => {
     </div>
   );
 };
+
+const nameSetting = () => {
+  return(
+    <>
+  <Typography variant="h6" color="inherit" noWrap>
+            Name
+          </Typography>
+          <Typography variant="body1" color="inherit" noWrap>
+            {currUser ? currUser.firstName + ' ' + currUser.lastName : ''}
+          </Typography>
+          </>
+          );
+}
 
 const mapStateToProps = (state) => {
   return {
