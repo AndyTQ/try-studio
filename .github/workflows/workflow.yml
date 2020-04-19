@@ -26,6 +26,12 @@ jobs:
       env:
         CI: true
         NODE_ENV: test
+    - name: Install Server Dependencies
+      working-directory: ./server
+      run: npm install
+    - name: Run Server Tests
+      working-directory: ./server
+      run: npm run test
     - name: "Upload to CodeClimate"
       env:
         CC_TEST_REPORTER_ID: 1f39d77da93511f5e7b4357d2dbee38c1d98c5e784bebe1c4d26ede0eab7d152
@@ -35,9 +41,3 @@ jobs:
         chmod +x ./cc-test-reporter
         ./cc-test-reporter format-coverage -t lcov client/coverage/lcov.info
         ./cc-test-reporter upload-coverage
-    - name: Install Server Dependencies
-      working-directory: ./server
-      run: npm install
-    - name: Run Server Tests
-      working-directory: ./server
-      run: npm run test
