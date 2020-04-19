@@ -88,16 +88,9 @@ const signUpComponent = (classes, handleChange, handleSubmit, authError) => {
   )
 }
 
-const signUpForm = (classes, handleChange, handleSubmit, authError) =>{
+const firstName = (handleChange) => {
   return (
-  <form className={classes.form} onSubmit={handleSubmit}>
-          <Grid container spacing={2} justify="center">
-            <Grid item xs={12}>
-              <Typography variant="body2" color="error" align="center">
-                {authError ? <span>{authError}</span> : null}
-              </Typography>
-            </Grid>
-            <Grid item xs={12} sm={6}>
+  <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="fname"
                 name="firstName"
@@ -110,7 +103,12 @@ const signUpForm = (classes, handleChange, handleSubmit, authError) =>{
                 autoFocus
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            );
+}
+
+const lastName = (handleChange) => {
+  return(
+<Grid item xs={12} sm={6}>
               <TextField
                 variant="outlined"
                 required
@@ -122,19 +120,29 @@ const signUpForm = (classes, handleChange, handleSubmit, authError) =>{
                 onChange={handleChange}
               />
             </Grid>
-            <Grid item xs={12}>
+            );
+}
+
+const email = (handleChange) => {
+  return(
+  <Grid item xs={12}>
               <TextField
                 variant="outlined"
                 required
                 fullWidth
                 id="email"
-                label="Email Address"
+                label="Email"
                 name="email"
                 autoComplete="email"
                 onChange={handleChange}
               />
             </Grid>
-            <Grid item xs={12}>
+            );
+}
+
+const password = (handleChange) => {
+  return(
+  <Grid item xs={12}>
               <TextField
                 variant="outlined"
                 required
@@ -147,6 +155,22 @@ const signUpForm = (classes, handleChange, handleSubmit, authError) =>{
                 onChange={handleChange}
               />
             </Grid>
+            );
+}
+
+const signUpForm = (classes, handleChange, handleSubmit, authError) =>{
+  return (
+  <form className={classes.form} onSubmit={handleSubmit}>
+          <Grid container spacing={2} justify="center">
+            <Grid item xs={12}>
+              <Typography variant="body2" color="error" align="center">
+                {authError ? <span>{authError}</span> : null}
+              </Typography>
+            </Grid>
+            {firstName(handleChange)}
+            {lastName(handleChange)}
+            {email(handleChange)}
+            {password(handleChange)}
           </Grid>
           <Button
             type="submit"
