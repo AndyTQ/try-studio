@@ -43,7 +43,7 @@ const Settings = (props) => {
         <Divider className={classes.divider} />
         {/* content for user settings*/}
         <div>
-          {nameSetting()}
+          {nameSetting(currUser)}
           <img
             src={process.env.PUBLIC_URL + '/construction.png'}
             alt="Logo"
@@ -54,7 +54,7 @@ const Settings = (props) => {
   );
 };
 
-const nameSetting = () => {
+const nameSetting = (currUser) => {
   return(
     <>
   <Typography variant="h6" color="inherit" noWrap>

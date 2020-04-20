@@ -23,27 +23,25 @@ function ListItemLink(props) {
   return <ListItem button component="a" {...props} />;
 }
 
+const items = [
+  { icon: <SpotifyIcon />, name: "Spotify", enabled: true },
+  { icon: <AppleIcon />, name: "Apple Music (Coming)", enabled: false },
+  { icon: <YouTubeIcon />,  name: "PlaYoutube Music (Coming)", enabled: false },
+];
+
 const streamingServicePanel = () => {
   return(
     <div>
-        <ListItem button>
+        {items.map(item => {
+          return(
+          <ListItem button disabled={!item.enabled}>
           <ListItemIcon>
-                <SpotifyIcon />
+                {item.icon}
               </ListItemIcon>
-              <ListItemText primary="Spotify" />
+              <ListItemText primary={item.name} />
             </ListItem>
-            <ListItem button disabled='true'>
-              <ListItemIcon>
-                <AppleIcon />
-              </ListItemIcon>
-              <ListItemText primary="Apple Music (Coming)" />
-            </ListItem>
-        <ListItem button disabled='true'>
-        <ListItemIcon>
-          <YouTubeIcon />
-        </ListItemIcon>
-        <ListItemText primary="Youtube Music (Coming)" />
-        </ListItem>
+          )
+        })}
     </div>
   );
 }
@@ -51,18 +49,12 @@ const streamingServicePanel = () => {
 const playListPanel = () => {
   return (
     <div>
-    <ListItemLink href="#recent">
-    <ListItemIcon>
-      <RecentIcon />
-    </ListItemIcon>
-    <ListItemText primary="Recent" />
-  </ListItemLink>
-  <ListItemLink href="#favourite">
-    <ListItemIcon>
-      <FavoriteIcon />
-    </ListItemIcon>
-    <ListItemText primary="Favourite" />
-  </ListItemLink>
+      <ListItemLink href="#favourite">
+        <ListItemIcon>
+          <FavoriteIcon />
+        </ListItemIcon>
+        <ListItemText primary="Favourite" />
+      </ListItemLink>
   </div>
   )
 }
@@ -88,7 +80,7 @@ export default function Submenu() {
             Playlists
         </ListSubheader>
         } component="nav" aria-label="secondary mailbox folders">
-          {playListPanel()}
+          {/* {playListPanel()} */}
       </List>
     </div>
   );
