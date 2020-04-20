@@ -119,15 +119,6 @@ const Table = ({ title, licenses, businessId }) => {
           style={{marginLeft:15}}>
           Add License
         </Button>
-    
-        <Button
-          disabled={true}
-          color="secondary"
-          variant="contained"
-          startIcon={<UpdateIcon />}
-          style={{marginLeft:15}}>
-          Reassess(Soon!)
-        </Button>
         </div>);
       }
       else{

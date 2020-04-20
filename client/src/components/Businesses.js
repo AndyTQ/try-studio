@@ -40,6 +40,35 @@ const image = {
   karaoke: "https://images.unsplash.com/photo-1485579149621-3123dd979885?ixlib=rb-1.2.1&auto=format&fit=crop&w=2978&q=80",
 }
 
+
+const businessCard = (business, classes, setCurrBusiness, setShowLicense) => {
+  return (
+  <Card key={business.name} className={classes.content}>
+        <CardActionArea>
+          <CardMedia
+            component="img"
+            alt="photo"
+            height="140"
+            image={image[business.type]}
+            title="photo"
+          />
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="h2">
+              {business.name}
+            </Typography>
+            <Typography className={classes.card} variant="body2" color="textSecondary" component="p">
+              {`${business.location}\n`}
+              {`ID: ${business.id}`}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+        <CardActions>
+          <Button variant='outlined' color='primary' onClick={() => {setCurrBusiness(business); setShowLicense(true);}}> Licenses </Button>
+        </CardActions>
+      </Card>
+    );
+}
+
 const Businesses = props => {
   const { businesses, getBusinesses } = props;
 
@@ -54,32 +83,11 @@ const Businesses = props => {
     getBusinesses();
   }, []);
 
+
   return (
     <div className={classes.root}>
       {businesses.map(business => (
-        <Card key={business.name} className={classes.content}>
-          <CardActionArea>
-            <CardMedia
-              component="img"
-              alt="photo"
-              height="140"
-              image={image[business.type]}
-              title="photo"
-            />
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="h2">
-                {business.name}
-              </Typography>
-              <Typography className={classes.card} variant="body2" color="textSecondary" component="p">
-                {`${business.location}\n`}
-                {`ID: ${business.id}`}
-              </Typography>
-            </CardContent>
-          </CardActionArea>
-          <CardActions>
-            <Button variant='outlined' color='primary' onClick={() => {setCurrBusiness(business); setShowLicense(true);}}> Licenses </Button>
-          </CardActions>
-        </Card>
+        businessCard(business, classes,  setCurrBusiness, setShowLicense)
       ))}
       {currBusiness ? 
       <Modal name="Licenses" open={showLicense} handleClose={() => {setShowLicense(false);}}> 
