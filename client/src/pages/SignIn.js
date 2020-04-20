@@ -111,14 +111,7 @@ const displaySignIn = (classes, handleChange, handleSubmit, authError) => {
   <Grid container component="main" className={classes.root}>
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} >
-      <div className={classes.mottoBox}>
-        <Typography component="h1" variant="h5" className={classes.motto}>
-          &quot;{"My business has been completed shifted by the infinite power from Try Studio. I believe that they will change the entire planet."}&quot;
-        </Typography>
-        <Typography component="h1" variant="h5" className={classes.motto} align='right'>
-          -- CEO, Macrohard
-        </Typography>
-      </div>
+        {mottoBox(classes)}
       </Grid>
       <Grid style={{backgroundColor: 'rgba(255,255,255,0.7)'}} item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
@@ -135,6 +128,19 @@ const displaySignIn = (classes, handleChange, handleSubmit, authError) => {
         </div>
       </Grid>
     </Grid>
+  );
+}
+
+const mottoBox = (classes) => {
+  return(
+  <div className={classes.mottoBox}>
+    <Typography component="h1" variant="h5" className={classes.motto}>
+      &quot;{"My business has been completed shifted by the infinite power from Try Studio. I believe that they will change the entire planet."}&quot;
+    </Typography>
+    <Typography component="h1" variant="h5" className={classes.motto} align='right'>
+      -- CEO, Macrohard
+    </Typography>
+  </div>
   );
 }
 
