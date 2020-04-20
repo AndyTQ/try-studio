@@ -9,20 +9,13 @@ export const getLicenses = (businessId) => {
     const licensesRef = ref.collection("licenses");
     
     userRef.onSnapshot(doc => {
-      let licenseIds;
       let licenses = [];
-      licenseIds = doc.data().licenses;
+      let licenseIds = doc.data().licenses
       if (licenseIds && licenseIds.length > 0){
-        let filteredLicenses;
-        
-        if (!businessId) {
-          filteredLicenses = licensesRef.where(firebase.firestore.FieldPath.documentId(), "in", licenseIds);
-        } else {
-          filteredLicenses = licensesRef.where(firebase.firestore.FieldPath.documentId(), "in", licenseIds).where(
-            "business", "==", businessId
-          )
-        }
-       
+        let filteredLicenses = (!businessId) ? licensesRef.where(firebase.firestore.FieldPath.documentId(), "in", licenseIds)
+        : licensesRef.where(firebase.firestore.FieldPath.documentId(), "in", licenseIds).where(
+          "business", "==", businessId
+        ); 
         filteredLicenses.get().then(snapshot => {
           snapshot.forEach(doc => {
             let data = doc.data();

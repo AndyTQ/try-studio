@@ -79,10 +79,8 @@ const Businesses = props => {
   const classes = useStyles();
 
   useEffect(() => {
-    console.log("Business Rerendered!");
     getBusinesses();
   }, []);
-
 
   return (
     <div className={classes.root}>
@@ -93,20 +91,26 @@ const Businesses = props => {
       <Modal name="Licenses" open={showLicense} handleClose={() => {setShowLicense(false);}}> 
         <LicenseTable title="Licenses" businessId={currBusiness.id}></LicenseTable>
       </Modal> : <></>}
-      <Card className={classes.content}>
-        <Button onClick={() => {setShowNewBusiness(true);}} style={{height: '100%', width: '100%'}}>
-          <div align='center'>
-            <BusinessIcon style={{ fontSize: '150px', color: 'grey'}}/>
-            <Typography align='center' style={{color: 'grey'}}gutterBottom variant="h5" component="h2">
-            Add A New Business
-            </Typography>
-          </div>
-        </Button>
-        <Modal name="Licenses" open={showNewBusiness} handleClose={() => {setShowNewBusiness(false);}}> 
-          <Questions />
-        </Modal>
-      </Card>
+      {addNewCard(classes, setShowNewBusiness, showNewBusiness)}
     </div>
+  );
+}
+
+const addNewCard = (classes, setShowNewBusiness, showNewBusiness) => {
+  return (
+  <Card className={classes.content}>
+    <Button onClick={() => {setShowNewBusiness(true);}} style={{height: '100%', width: '100%'}}>
+      <div align='center'>
+        <BusinessIcon style={{ fontSize: '150px', color: 'grey'}}/>
+        <Typography align='center' style={{color: 'grey'}}gutterBottom variant="h5" component="h2">
+        Add A New Business
+        </Typography>
+      </div>
+    </Button>
+    <Modal name="Licenses" open={showNewBusiness} handleClose={() => {setShowNewBusiness(false);}}> 
+      <Questions />
+    </Modal>
+  </Card>
   );
 }
 
