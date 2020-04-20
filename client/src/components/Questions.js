@@ -508,14 +508,14 @@ export default function Questions({ businessId }) {
             <Button
               variant="contained"
               color="primary"
-              disabled={businessId ? false : (newBusinessCountryCheck())}
+              disabled={activeStep === 0 ? (businessId ? false : (newBusinessCountryCheck())) : false}
               onClick={handleNext}
               className={classes.button}
             >
               Next
           </Button></div>) : <></>}
           <div style={{marginTop: 10}}>
-            {newBusinessCountryCheck() ? "Try Studio only supports Canada and USA. Please select your location in Canada/USA to continue." : ""}
+            {(activeStep === 0 && !businessId) ? (newBusinessCountryCheck() ? "Try Studio only supports Canada and USA. Please select your location in Canada/USA to continue." : "") : ""}
           </div>
           </div>
         </div>
