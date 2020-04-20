@@ -58,7 +58,7 @@ const tableIcons = {
 const Table = ({ title, licenses, businessId }) => {
 
   const buildColumn = (title, field, type) => {
-    return {titie: title, field: field, type: type}
+    return {title: title, field: field, type: type}
   }
 
   const [allowAdd, setAllowAdd] = useState(false);
