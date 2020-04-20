@@ -67,7 +67,7 @@ const Table = ({ title, licenses, businessId }) => {
       buildColumn('License ID', 'licenseId', 'string'),
       buildColumn('Business ID', 'business', 'string'),
       buildColumn('Licensing Company', 'cmo', 'string'),
-      buildColumn('Price', 'price', 'numberic'),
+      buildColumn('Price', 'price', 'numeric'),
       buildColumn('Registration Date', 'date', 'string'),
     ],
     data: licenses,

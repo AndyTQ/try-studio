@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState} from 'react';
+import React, { useEffect, useCallback, useState, useRef} from 'react';
 import MaterialTable, { MTableToolbar } from 'material-table';
 import TablePagination from '@material-ui/core/TablePagination';
 
@@ -26,8 +26,11 @@ import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import Add from '@material-ui/icons/Add';
 
+import {
+    TextField,
+  } from "@material-ui/core";
+
 import Modal from './Modal';
-import Questions2 from './Questions2';
 
 import { useFirestore, useFirebase } from 'react-redux-firebase'
 
@@ -62,16 +65,49 @@ const Table2 = ({ title, playlists }) => {
   const [state, setState] = React.useState({
     columns: [
       buildColumn('Playlist ID', 'playlistId', 'string'),
+      buildColumn('Playlist Name', 'name', 'string'),
       buildColumn('Playlist Owner', 'owner', 'string'),
       buildColumn('Playlist Track Count', 'count', 'numeric'),
     ],
     data: playlists,
   });
+  let textInput = useRef(null);
 
-  const [openNew, setOpenNew] = React.useState(false);
-  const [openAssess, setOpenAssess] = React.useState(false);
   const firebase = useFirebase();
   const firestore = useFirestore();
+
+  let playlistRef = firestore.collection('playlists');
+
+  const addUserData = (type, newId) => {
+    let uid = firebase.auth().currentUser.uid;
+    firestore.collection('users').doc(uid).get().then((doc) => { 
+      let userData = doc.data();
+      userData[type].push(newId);
+      firestore.collection('users').doc(uid).set(userData);
+    }
+    );
+  }
+
+  const fireStoreAddPlaylist = (playlistId, playlistInfo) => {
+    let data = {};
+    let newId = playlistRef.doc().id;
+    data.playlistId = playlistId;
+    data.name = playlistInfo.name;
+    data.owner = playlistInfo.owner;
+    data.count = playlistInfo.songs;
+    playlistRef.doc(newId).set({...data})
+    .then(()=>{
+        addUserData("playlists", newId)
+      }
+    )
+  }
+
+  const handleClick = () => {
+    fetch(`http://try-studio.herokuapp.com/playlist?playlistId=${textInput.current.value}`).then(res => res.json()).then(data => {
+        console.log(data);
+        fireStoreAddPlaylist(textInput.current.value, data);
+    });
+  }
 
   const updateAllowance = () => {
     let uid = firebase.auth().currentUser.uid;
@@ -92,24 +128,17 @@ const Table2 = ({ title, playlists }) => {
     });
     updateAllowance();
   }, [playlists]);
-
-  const openHandler = useCallback(() => {
-    setOpenNew(true);
-  });
-
-  const closeHandler = useCallback(() =>{ 
-    setOpenNew(false);
-  });
   
   const displayToolbar = () => {
     if (allowAdd) {
         return (
             <div>
+            <TextField inputRef={textInput} variant="outlined" label="Playlist ID" style={{width: 200}}/>
             <Button
                 variant="contained"
                 color="secondary"
                 startIcon={<Add />}
-                onClick={openHandler}
+                onClick={handleClick}
                 style={{marginLeft:15}}>
                 Add Playlist
             </Button>
@@ -136,7 +165,7 @@ const Table2 = ({ title, playlists }) => {
           <div>
             <MTableToolbar {...props}
               title={
-                <Typography component="h1" variant="h6" color="inherit" style={{display: 'flex'}}>
+                <Typography component="h1" variant="h6" color="inherit" style={{display: 'flex', flexDirection: 'column', textAlign: 'left', marginTop: 10}}>
                   {title}
                   {displayToolbar()}
                 </Typography>
@@ -156,9 +185,6 @@ const Table2 = ({ title, playlists }) => {
         exportButton: true,
       }}
     />
-    <Modal name="Playlists" open={openNew} handleClose={closeHandler}> 
-      <Questions2 />
-    </Modal>
     </div>
   );
 };

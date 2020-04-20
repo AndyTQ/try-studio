@@ -3,16 +3,14 @@ import { connect } from 'react-redux';
 import Table from './Table';
 import { getPlaylists } from '../redux/actions/playlistActions';
 
-const Playlists = ({playlists, getPlaylists}) => {
+const PlaylistTable = ({playlists, getPlaylists}) => {
 
   useEffect(() => {
     getPlaylists();
   }, []);
-    
-  
 
   return (
-    <Table licenses={playlists} title="Playlists" />
+    <Table playlists={playlists} title="Playlists" />
   );
 } 
 
@@ -29,4 +27,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Playlists);
+export default connect(mapStateToProps, mapDispatchToProps)(PlaylistTable);

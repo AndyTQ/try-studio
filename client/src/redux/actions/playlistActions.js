@@ -4,13 +4,12 @@ export const getPlaylists = () => {
     const playlistsRef = firebase.firestore().collection("playlists");
     firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).onSnapshot(doc => {
       let playlists = [];
-      let playlistIds = doc.data().playlists
-      if (playlists && playlistsIds.length > 0){
-        let playlistsRefs = playlistsRef.where(firebase.firestore.FieldPath.documentId(), "in", playlistIds)
-        playlistsRefs.get().then(snapshot => {
+      let playlistIds = doc.data().playlists;
+      if (playlistIds && playlistIds.length > 0) {
+        let playlistRefs = playlistsRef.where(firebase.firestore.FieldPath.documentId(), "in", playlistIds)
+        playlistRefs.get().then(snapshot => {
           snapshot.forEach(doc => {
             let data = doc.data();
-            data["playlistId"] = doc.id;
             playlists.push(data);
         });
       }).then(() => {

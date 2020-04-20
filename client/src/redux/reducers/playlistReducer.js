@@ -8,13 +8,13 @@ const initState = {
       case 'GET_PLAYLISTS_SUCCESS':
         return {
             ...state,
-            licenseError: null,
-            licenses: action.playlists,
+            playlistError: null,
+            playlists: action.playlists,
         };
       case 'GET_PLAYLISTS_ERROR':
         return {
             ...state,
-            licenseError: action.playlists,
+            playlistError: action.err,
         };
       default:
         return state;

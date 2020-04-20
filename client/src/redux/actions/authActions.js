@@ -65,7 +65,8 @@ export const signUp = (newUser) => {
                 firstName: newUser.firstName,
                 lastName: newUser.lastName,
                 licenses: [],
-                businesses: []
+                businesses: [],
+                playlists: []
             }).then(() => {
                 dispatch({ type: 'SIGNUP_SUCCESS'})
             }).catch(err => {
