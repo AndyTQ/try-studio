@@ -55,13 +55,15 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 };
 
-const Table = ({ title, licenses, businessId }) => {
+const Table = ({ title, licenses, businessId, playlists }) => {
 
   const buildColumn = (title, field, type) => {
     return {title: title, field: field, type: type}
   }
 
   const [allowAdd, setAllowAdd] = useState(false);
+  
+ 
   const [state, setState] = React.useState({
     columns: [
       buildColumn('License ID', 'licenseId', 'string'),
@@ -72,6 +74,7 @@ const Table = ({ title, licenses, businessId }) => {
     ],
     data: licenses,
   });
+
 
   const [openNew, setOpenNew] = React.useState(false);
   const [openAssess, setOpenAssess] = React.useState(false);
