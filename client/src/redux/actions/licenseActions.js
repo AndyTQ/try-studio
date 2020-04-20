@@ -3,10 +3,8 @@ import { Businesses } from "../../components";
 export const getLicenses = (businessId) => {
   return (dispatch, getState, { getFirebase }) => {
     const firebase = getFirebase();
-    const ref = firebase.firestore();
-    const licensesRef = ref.collection("licenses");
-    
-    ref.collection("users").doc(firebase.auth().currentUser.uid).onSnapshot(doc => {
+    const licensesRef = firebase.firestore().collection("licenses");
+    firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).onSnapshot(doc => {
       let licenses = [];
       let licenseIds = doc.data().licenses
       if (licenseIds && licenseIds.length > 0){
@@ -21,10 +19,7 @@ export const getLicenses = (businessId) => {
             licenses.push(data);
         });
       }).then(() => {
-        dispatch({
-          type: 'GET_LICENSES_SUCCESS',
-          licenses,
-        });
+        dispatch({type: 'GET_LICENSES_SUCCESS', licenses,});
       });            
       } 
     });

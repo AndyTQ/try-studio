@@ -46,18 +46,6 @@ const streamingServicePanel = () => {
   );
 }
 
-const playListPanel = () => {
-  return (
-    <div>
-      <ListItemLink href="#favourite">
-        <ListItemIcon>
-          <FavoriteIcon />
-        </ListItemIcon>
-        <ListItemText primary="Favourite" />
-      </ListItemLink>
-  </div>
-  )
-}
 
 export default function Submenu() {
   const classes = useStyles();
@@ -74,14 +62,6 @@ export default function Submenu() {
         {streamingServicePanel()}
       </List>
       <Divider />
-      <List
-        subheader={
-          <ListSubheader component="div">
-            Playlists
-        </ListSubheader>
-        } component="nav" aria-label="secondary mailbox folders">
-          {playListPanel()}
-      </List>
     </div>
   );
 }
