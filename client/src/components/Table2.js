@@ -103,8 +103,11 @@ const Table2 = ({ title, playlists }) => {
   }
 
   const handleClick = () => {
+    let playlistIds = playlists.map(i => i.playlistId);
+    if (playlistIds.includes(textInput.current.value)) {
+      return;
+    }
     fetch(`http://try-studio.herokuapp.com/playlist?playlistId=${textInput.current.value}`).then(res => res.json()).then(data => {
-        console.log(data);
         fireStoreAddPlaylist(textInput.current.value, data);
     });
   }

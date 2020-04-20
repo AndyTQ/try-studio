@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Submenu from '../components/Submenu';
-import Table2 from '../components/Table2';
+import PlaylistTable from '../components/PlaylistTable';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 
@@ -23,7 +23,7 @@ const Playlists = () => {
         </Grid>
         <Grid item xs={10}>
           <div align='center'>
-            <Table2 className={classes.content} title="My Music" />
+            <PlaylistTable className={classes.content} title="My Music" />
           </div>
         </Grid>
       </Grid>
