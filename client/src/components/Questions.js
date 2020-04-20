@@ -118,6 +118,10 @@ export default function Questions({ businessId }) {
     }
   }
 
+  const getCountry = (location) => {
+    return location.split(", ").slice(-1).pop()
+  }
+
   useEffect(() => {
     if (!businessId){
       register({ name: "name" }, { required: true });
@@ -130,7 +134,7 @@ export default function Questions({ businessId }) {
         let country;
         businesses.doc(businessId).get().then(doc => {
           let location = doc.data().location;
-          country = location.split(", ").slice(-1).pop()
+          country = getCountry(location);
           setCountry(country);
         }).then(() => {
             firestore.collection('questions').doc(country).get().then(doc =>{
@@ -464,6 +468,17 @@ export default function Questions({ businessId }) {
     setActiveStep(0);
   };
 
+
+  const newBusinessCountryCheck = () => {
+    let currentCountry = watch("location") ? getCountry(watch("location")) : null;
+    console.log(currentCountry)
+    if (currentCountry){
+      return !(currentCountry == "Canada" || currentCountry == "USA");
+    } else {
+      return true;
+    }
+  }
+
   return (
     <div className={classes.root}>
       <Stepper activeStep={activeStep} className={classes.stepper}>
@@ -493,14 +508,20 @@ export default function Questions({ businessId }) {
             <Button
               variant="contained"
               color="primary"
+              disabled={businessId ? false : (newBusinessCountryCheck())}
               onClick={handleNext}
               className={classes.button}
             >
               Next
           </Button></div>) : <></>}
+          <div style={{marginTop: 10}}>
+            {newBusinessCountryCheck() ? "Try Studio only supports Canada and USA. Please select your location in Canada/USA to continue." : ""}
+          </div>
           </div>
         </div>
       </div>
     </div>
   );
+
 };
+

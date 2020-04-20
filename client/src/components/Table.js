@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState} from 'react';
+import React, { useEffect, useCallback, useState, useRef} from 'react';
 import MaterialTable, { MTableToolbar } from 'material-table';
 import TablePagination from '@material-ui/core/TablePagination';
 
@@ -6,7 +6,9 @@ import { forwardRef } from 'react';
 
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
-
+import {
+  TextField,
+} from "@material-ui/core";
 import Check from '@material-ui/icons/Check';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
@@ -63,18 +65,27 @@ const Table = ({ title, licenses, businessId, playlists }) => {
 
   const [allowAdd, setAllowAdd] = useState(false);
   
- 
+  const dataColumns = playlists ? [
+    buildColumn('Playlist ID', 'playlistId', 'string'),
+    buildColumn('Playlist Name', 'name', 'string'),
+    buildColumn('Playlist Owner', 'owner', 'string'),
+    buildColumn('Playlist Track Count', 'count', 'numeric'),
+  ] : [
+    buildColumn('License ID', 'licenseId', 'string'),
+    buildColumn('Business ID', 'business', 'string'),
+    buildColumn('Licensing Company', 'cmo', 'string'),
+    buildColumn('Price', 'price', 'numeric'),
+    buildColumn('Registration Date', 'date', 'string'),
+  ]
+
   const [state, setState] = React.useState({
-    columns: [
-      buildColumn('License ID', 'licenseId', 'string'),
-      buildColumn('Business ID', 'business', 'string'),
-      buildColumn('Licensing Company', 'cmo', 'string'),
-      buildColumn('Price', 'price', 'numeric'),
-      buildColumn('Registration Date', 'date', 'string'),
-    ],
-    data: licenses,
+    columns: dataColumns,
+    data: playlists ? playlists : licenses,
   });
 
+  let textInput = useRef(null);
+
+  const mode = playlists ? "playlists" : "licenses"
 
   const [openNew, setOpenNew] = React.useState(false);
   const [openAssess, setOpenAssess] = React.useState(false);
@@ -82,25 +93,53 @@ const Table = ({ title, licenses, businessId, playlists }) => {
   const firestore = useFirestore();
   let location = useLocation();
 
+  let playlistRef = firestore.collection('playlists');
+
   const updateAllowance = () => {
     let uid = firebase.auth().currentUser.uid;
     firestore.collection('users').doc(uid).get().then((doc) => {
       let userData = doc.data();
-      if (userData.licenses.length < 10){
+      if (userData[mode].length < 10){
         setAllowAdd(true);
       } else {
         setAllowAdd(false);
       }
     })
   }
+  const addUserData = (type, newId) => {
+    let uid = firebase.auth().currentUser.uid;
+    firestore.collection('users').doc(uid).get().then((doc) => { 
+      let userData = doc.data();
+      userData[type].push(newId);
+      firestore.collection('users').doc(uid).set(userData);
+    }
+    );
+  }
 
-  useEffect(() => {
-    setState({
-      ...state,
-      data: licenses,
+  const handleClick = () => {
+    let playlistIds = playlists.map(i => i.playlistId);
+    if (playlistIds.includes(textInput.current.value)) {
+      return;
+    }
+    fetch(`http://try-studio.herokuapp.com/playlist?playlistId=${textInput.current.value}`).then(res => res.json()).then(data => {
+        fireStoreAddPlaylist(textInput.current.value, data);
     });
-    updateAllowance();
-  }, [licenses]);
+  }
+
+  const fireStoreAddPlaylist = (playlistId, playlistInfo) => {
+    let data = {};
+    let newId = playlistRef.doc().id;
+    data.playlistId = playlistId;
+    data.name = playlistInfo.name;
+    data.owner = playlistInfo.owner;
+    data.count = playlistInfo.songs;
+    playlistRef.doc(newId).set({...data})
+    .then(()=>{
+        addUserData("playlists", newId)
+      }
+    )
+  }
+
 
   const openHandler = useCallback(() => {
     setOpenNew(true);
@@ -110,24 +149,36 @@ const Table = ({ title, licenses, businessId, playlists }) => {
     setOpenNew(false);
   });
   
+  const monitor = playlists ? [playlists] : [licenses];
+
+  useEffect(() => {
+    setState({
+      ...state,
+      data: playlists ? playlists : licenses
+    });
+    updateAllowance();
+  }, monitor);
+  
   const displayToolbar = () => {
-    if (location.pathname != "/licenses" && location.pathname != "/playlists"){
+    if (location.pathname != "/licenses"){
       if (allowAdd) {
         return (
-          <div>
+          <div style={{marginLeft: 20}}>
+            {playlists ? <TextField inputRef={textInput} variant="outlined" label="Playlist ID" style={{width: 200}} /> : <></>}
             <Button
               variant="contained"
               color="secondary"
               startIcon={<Add />}
-              onClick={openHandler}
-              style={{marginLeft:15}}>
-              Add License
+              onClick={playlists ? handleClick : openHandler}
+              style={playlists ? {marginTop: 10, marginLeft: 10} : {}}
+              >
+              Add New
             </Button>
           </div>
         );
       }
       else{
-        return (<Typography variant="body1" style={{marginTop: 5, marginLeft: 20, color: "grey"}}> You have reached the limit of adding new licenses. </Typography>)
+        return (<Typography variant="body1" style={{marginTop: 5, marginLeft: 20, color: "grey"}}> You have reached the limit of adding new {playlists ? "playlist" : "licenses"}. </Typography>)
       }
     } 
     else {
@@ -139,7 +190,7 @@ const Table = ({ title, licenses, businessId, playlists }) => {
     <div>
     <MaterialTable
       icons={tableIcons}
-      title="Licenses"
+      title={mode.charAt(0).toUpperCase() + mode.substring(1)}
       columns={state.columns}
       data={state.data}
       style={{
@@ -150,10 +201,15 @@ const Table = ({ title, licenses, businessId, playlists }) => {
           <div>
             <MTableToolbar {...props}
               title={
-                <Typography component="h1" variant="h6" color="inherit" style={{display: 'flex'}}>
-                  {title}
-                  {displayToolbar()}
-                </Typography>
+                <div>
+                  <Typography component="h1" variant="h6" color="inherit" style={{display: 'flex'}}>
+                    <Typography component="h1" variant="h6" color="inherit" style={playlists ? {marginTop: 10} : {}}>
+                    {mode.charAt(0).toUpperCase() + mode.substring(1)}
+                    </Typography>
+                    {displayToolbar()}
+                  </Typography>
+                  
+                </div>
               }
             />
           </div>

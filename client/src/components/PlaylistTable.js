@@ -1,6 +1,6 @@
 import React, { useEffect, Component, useState } from 'react';
 import { connect } from 'react-redux';
-import Table2 from './Table2';
+import Table from './Table';
 import { getPlaylists } from '../redux/actions/playlistActions';
 
 const PlaylistTable = ({playlists, getPlaylists}) => {
@@ -10,7 +10,7 @@ const PlaylistTable = ({playlists, getPlaylists}) => {
   }, []);
 
   return (
-    <Table2 playlists={playlists} title="Playlists" />
+    <Table playlists={playlists} title="Playlists" />
   );
 } 
 

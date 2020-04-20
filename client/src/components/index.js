@@ -8,5 +8,4 @@ export { default as Submenu } from './Submenu';
 export { default as Table } from './Table';
 export { default as Questions} from './Questions';
 export { default as LicenseTable } from './LicenseTable';
-export { default as Table2 } from './Table2';
 export { default as PlaylistTable} from './PlaylistTable';
