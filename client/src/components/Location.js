@@ -8,7 +8,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import parse from 'autosuggest-highlight/parse';
 import throttle from 'lodash/throttle';
 
-
 function loadScript(src, position, id) {
   if (!position) {
     return;
@@ -115,13 +114,7 @@ const AutocompleteComponent = (handleAddress, options, handleChange, classes) =>
       autoComplete
       includeInputInList
       renderInput={(params) => (
-        <TextField
-          {...params}
-          label="Enter your location"
-          variant="outlined"
-          fullWidth
-          onChange={handleChange}
-        />
+        locationTextField(params, handleChange)
       )}
       renderOption={(option) => {
         const matches = option.structured_formatting.main_text_matched_substrings;
@@ -129,24 +122,40 @@ const AutocompleteComponent = (handleAddress, options, handleChange, classes) =>
           option.structured_formatting.main_text,
           matches.map((match) => [match.offset, match.offset + match.length]),
         );
-        return (
-          <Grid container alignItems="center">
-            <Grid item>
-              <LocationOnIcon className={classes.icon} />
-            </Grid>
-            <Grid item xs>
-              {parts.map((part, index) => (
-                <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
-                  {part.text}
-                </span>
-              ))}
-              <Typography variant="body2" color="textSecondary">
-                {option.structured_formatting.secondary_text}
-              </Typography>
-            </Grid>
-          </Grid>
-        );
+        return renderedBox(classes, parts, option)
       }}
     />
   )
+}
+
+const locationTextField = (params, handleChange) => {
+  return (
+  <TextField
+          {...params}
+          label="Enter your location"
+          variant="outlined"
+          fullWidth
+          onChange={handleChange}
+        />
+        );
+}
+
+const renderedBox = (classes, parts, option) => {
+  return(
+  <Grid container alignItems="center">
+    <Grid item>
+      <LocationOnIcon className={classes.icon} />
+    </Grid>
+    <Grid item xs>
+      {parts.map((part, index) => (
+        <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
+          {part.text}
+        </span>
+      ))}
+      <Typography variant="body2" color="textSecondary">
+        {option.structured_formatting.secondary_text}
+      </Typography>
+    </Grid>
+  </Grid>
+  );
 }
