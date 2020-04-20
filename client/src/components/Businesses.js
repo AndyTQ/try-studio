@@ -114,14 +114,14 @@ const addNewCard = (classes, setShowNewBusiness, showNewBusiness) => {
   );
 }
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   return {
     auth: state.firebase.auth,
     businesses: state.dash.businesses
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+export const mapDispatchToProps = (dispatch) => {
   return {
     getBusinesses: () => dispatch(getBusinesses())
   };
