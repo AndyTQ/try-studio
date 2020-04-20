@@ -158,6 +158,17 @@ const password = (handleChange) => {
             );
 }
 
+const signUpFormInputs = (handleChange) => {
+  return(
+  <>
+  {firstName(handleChange)}
+  {lastName(handleChange)}
+  {email(handleChange)}
+  {password(handleChange)}
+  </>
+  )
+}
+
 const signUpForm = (classes, handleChange, handleSubmit, authError) =>{
   return (
   <form className={classes.form} onSubmit={handleSubmit}>
@@ -167,10 +178,7 @@ const signUpForm = (classes, handleChange, handleSubmit, authError) =>{
                 {authError ? <span>{authError}</span> : null}
               </Typography>
             </Grid>
-            {firstName(handleChange)}
-            {lastName(handleChange)}
-            {email(handleChange)}
-            {password(handleChange)}
+            {signUpFormInputs(handleChange)}
           </Grid>
           <Button
             type="submit"
@@ -181,14 +189,20 @@ const signUpForm = (classes, handleChange, handleSubmit, authError) =>{
           >
             Sign Up
           </Button>
-          <Grid container justify="flex-end">
+          {signInPrompt()}
+        </form>
+    );
+}
+
+const signInPrompt = () => {
+  return (
+  <Grid container justify="flex-end">
             <Grid item>
               <Link href="/" variant="body2">
                 Already have an account? Sign in
               </Link>
             </Grid>
           </Grid>
-        </form>
     );
 }
 

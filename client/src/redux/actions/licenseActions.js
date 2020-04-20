@@ -4,11 +4,9 @@ export const getLicenses = (businessId) => {
   return (dispatch, getState, { getFirebase }) => {
     const firebase = getFirebase();
     const ref = firebase.firestore();
-    const usersRef = ref.collection("users");
-    const userRef = usersRef.doc(firebase.auth().currentUser.uid);
     const licensesRef = ref.collection("licenses");
     
-    userRef.onSnapshot(doc => {
+    ref.collection("users").doc(firebase.auth().currentUser.uid).onSnapshot(doc => {
       let licenses = [];
       let licenseIds = doc.data().licenses
       if (licenseIds && licenseIds.length > 0){
@@ -22,8 +20,6 @@ export const getLicenses = (businessId) => {
             data["licenseId"] = doc.id;
             licenses.push(data);
         });
-      }).catch(err => {
-        dispatch({type: 'GET_LICENSES_ERROR', err});
       }).then(() => {
         dispatch({
           type: 'GET_LICENSES_SUCCESS',

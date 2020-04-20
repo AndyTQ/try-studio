@@ -80,7 +80,7 @@ export default function Submenu() {
             Playlists
         </ListSubheader>
         } component="nav" aria-label="secondary mailbox folders">
-          {/* {playListPanel()} */}
+          {playListPanel()}
       </List>
     </div>
   );
