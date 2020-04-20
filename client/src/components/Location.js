@@ -8,7 +8,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import parse from 'autosuggest-highlight/parse';
 import throttle from 'lodash/throttle';
 
-
 function loadScript(src, position, id) {
   if (!position) {
     return;
@@ -36,11 +35,12 @@ export default function Location(props) {
   const [options, setOptions] = React.useState([]);
   const [curAddress, setCurAddress] = React.useState('');
   const loaded = React.useRef(false);
+  const API = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDVkPCtEZpk_6NrNsqZqpbCW7dtBYTFHII&libraries=places';
 
   if (typeof window !== 'undefined' && !loaded.current) {
     if (!document.querySelector('#google-maps')) {
       loadScript(
-        'https://maps.googleapis.com/maps/api/js?key=AIzaSyDVkPCtEZpk_6NrNsqZqpbCW7dtBYTFHII&libraries=places',
+        API,
         document.querySelector('head'),
         'google-maps',
       );
@@ -58,7 +58,6 @@ export default function Location(props) {
     if (value) {
       setCurAddress(value.description);
       props.onChange(value.description);
-      console.log(curAddress);
     }
   };
 
@@ -97,7 +96,15 @@ export default function Location(props) {
   }, [inputValue, fetch]);
 
   return (
-    <Autocomplete
+    <>
+    {AutocompleteComponent(handleAddress, options, handleChange, classes)}
+    </>
+  );
+}
+
+const AutocompleteComponent = (handleAddress, options, handleChange, classes) => {
+  return (
+  <Autocomplete
       id="google-map-demo"
       onChange={handleAddress}
       style={{ width: 300 }}
@@ -107,13 +114,7 @@ export default function Location(props) {
       autoComplete
       includeInputInList
       renderInput={(params) => (
-        <TextField
-          {...params}
-          label="Enter your location"
-          variant="outlined"
-          fullWidth
-          onChange={handleChange}
-        />
+        locationTextField(params, handleChange)
       )}
       renderOption={(option) => {
         const matches = option.structured_formatting.main_text_matched_substrings;
@@ -121,26 +122,40 @@ export default function Location(props) {
           option.structured_formatting.main_text,
           matches.map((match) => [match.offset, match.offset + match.length]),
         );
-
-        return (
-          <Grid container alignItems="center">
-            <Grid item>
-              <LocationOnIcon className={classes.icon} />
-            </Grid>
-            <Grid item xs>
-              {parts.map((part, index) => (
-                <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
-                  {part.text}
-                </span>
-              ))}
-
-              <Typography variant="body2" color="textSecondary">
-                {option.structured_formatting.secondary_text}
-              </Typography>
-            </Grid>
-          </Grid>
-        );
+        return renderedBox(classes, parts, option)
       }}
     />
+  )
+}
+
+const locationTextField = (params, handleChange) => {
+  return (
+  <TextField
+          {...params}
+          label="Enter your location"
+          variant="outlined"
+          fullWidth
+          onChange={handleChange}
+        />
+        );
+}
+
+const renderedBox = (classes, parts, option) => {
+  return(
+  <Grid container alignItems="center">
+    <Grid item>
+      <LocationOnIcon className={classes.icon} />
+    </Grid>
+    <Grid item xs>
+      {parts.map((part, index) => (
+        <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
+          {part.text}
+        </span>
+      ))}
+      <Typography variant="body2" color="textSecondary">
+        {option.structured_formatting.secondary_text}
+      </Typography>
+    </Grid>
+  </Grid>
   );
 }

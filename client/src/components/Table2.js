@@ -25,12 +25,9 @@ import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import Add from '@material-ui/icons/Add';
-import UpdateIcon from '@material-ui/icons/Update';
 
 import Modal from './Modal';
-import Questions from './Questions';
-
-import { useLocation } from 'react-router-dom';
+import Questions2 from './Questions2';
 
 import { useFirestore, useFirebase } from 'react-redux-firebase'
 
@@ -55,7 +52,7 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 };
 
-const Table = ({ title, licenses, businessId }) => {
+const Table2 = ({ title, playlists }) => {
 
   const buildColumn = (title, field, type) => {
     return {titie: title, field: field, type: type}
@@ -64,26 +61,23 @@ const Table = ({ title, licenses, businessId }) => {
   const [allowAdd, setAllowAdd] = useState(false);
   const [state, setState] = React.useState({
     columns: [
-      buildColumn('License ID', 'licenseId', 'string'),
-      buildColumn('Business ID', 'business', 'string'),
-      buildColumn('Licensing Company', 'cmo', 'string'),
-      buildColumn('Price', 'price', 'numberic'),
-      buildColumn('Registration Date', 'date', 'string'),
+      buildColumn('Playlist ID', 'playlistId', 'string'),
+      buildColumn('Playlist Owner', 'owner', 'string'),
+      buildColumn('Playlist Track Count', 'count', 'numeric'),
     ],
-    data: licenses,
+    data: playlists,
   });
 
   const [openNew, setOpenNew] = React.useState(false);
   const [openAssess, setOpenAssess] = React.useState(false);
   const firebase = useFirebase();
   const firestore = useFirestore();
-  let location = useLocation();
 
   const updateAllowance = () => {
     let uid = firebase.auth().currentUser.uid;
     firestore.collection('users').doc(uid).get().then((doc) => {
       let userData = doc.data();
-      if (userData.licenses.length < 10){
+      if (!userData.playlists || userData.playlists.length < 10) {
         setAllowAdd(true);
       } else {
         setAllowAdd(false);
@@ -94,10 +88,10 @@ const Table = ({ title, licenses, businessId }) => {
   useEffect(() => {
     setState({
       ...state,
-      data: licenses,
+      data: playlists,
     });
     updateAllowance();
-  }, [licenses]);
+  }, [playlists]);
 
   const openHandler = useCallback(() => {
     setOpenNew(true);
@@ -108,35 +102,30 @@ const Table = ({ title, licenses, businessId }) => {
   });
   
   const displayToolbar = () => {
-    if (location.pathname != "/licenses" && location.pathname != "/playlists"){
-      if (allowAdd) {
+    if (allowAdd) {
         return (
-          <div>
+            <div>
             <Button
-              variant="contained"
-              color="secondary"
-              startIcon={<Add />}
-              onClick={openHandler}
-              style={{marginLeft:15}}>
-              Add License
+                variant="contained"
+                color="secondary"
+                startIcon={<Add />}
+                onClick={openHandler}
+                style={{marginLeft:15}}>
+                Add Playlist
             </Button>
-          </div>
+            </div>
         );
-      }
-      else{
-        return (<Typography variant="body1" style={{marginTop: 5, marginLeft: 20, color: "grey"}}> You have reached the limit of adding new licenses. </Typography>)
-      }
-    } 
-    else {
-      return <Typography style={{marginTop: 5, marginLeft: 20, color: "grey"}}variant="body1"> To add a new license, go to Businesses > Select a business > Add New</Typography>
     }
+    else {
+      return (<Typography variant="body1" style={{marginTop: 5, marginLeft: 20, color: "grey"}}> You have reached the limit of adding new playlists. </Typography>)
+    } 
   }
 
   return (
     <div>
     <MaterialTable
       icons={tableIcons}
-      title="Licenses"
+      title="Playlists"
       columns={state.columns}
       data={state.data}
       style={{
@@ -167,11 +156,11 @@ const Table = ({ title, licenses, businessId }) => {
         exportButton: true,
       }}
     />
-    <Modal name="Licenses" open={openNew} handleClose={closeHandler}> 
-      <Questions businessId={businessId} />
+    <Modal name="Playlists" open={openNew} handleClose={closeHandler}> 
+      <Questions2 />
     </Modal>
     </div>
   );
 };
 
-export default React.memo(Table);
+export default React.memo(Table2);

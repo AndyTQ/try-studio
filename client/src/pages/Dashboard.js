@@ -14,9 +14,6 @@ import { getUser } from '../redux/actions/authActions';
 
 
 const useStyles = makeStyles({
-  card: {
-    whiteSpace: "pre",
-  },
   divider: {
     marginTop: '18px',
     marginBottom: '24px',
@@ -48,12 +45,6 @@ const Dashboard = props => {
         </Typography>
         <Divider className={classes.divider} />
         <Grid container spacing={3}>
-          {/* <Grid item xs={4}>
-            <NumberCard title='Total money spent' number={103} increase={23} info='Since last month' imageName='music_time'/>
-          </Grid>
-          <Grid item xs={4}>
-            <NumberCard title='Total money spent' number={103} increase={23} info='Since last month' imageName='music_time'/>
-          </Grid> */}
           <Grid item xs={12}>
             <Businesses />
           </Grid>

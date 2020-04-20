@@ -1,16 +1,12 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom'; // for navigating back to sign-in page if there's no auth.
-import Table from '../components/Table';
+import LicenseTable from '../components/LicenseTable';
 import { getLicenses } from '../redux/actions/licenseActions';
 import Grid from '@material-ui/core/Grid';
 
 const Licenses = props => {
-  const { auth, licenses, getLicenses } = props;
-
-  useEffect(() => {
-    getLicenses();
-  }, []);
+  const { auth } = props;
 
   if (!auth.uid) {
     return <Redirect to='/' />;
@@ -19,7 +15,7 @@ const Licenses = props => {
   return (
     <Grid container>
       <Grid item lg>
-        <Table licenses={licenses} title="My Licenses" />
+        <LicenseTable />
       </Grid>
     </Grid>
   );
@@ -27,15 +23,8 @@ const Licenses = props => {
 
 const mapStateToProps = (state) => {
   return {
-    auth: state.firebase.auth,
-    licenses: state.license.licenses
+    auth: state.firebase.auth
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    getLicenses: () => dispatch(getLicenses())
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Licenses);
+export default connect(mapStateToProps)(Licenses);

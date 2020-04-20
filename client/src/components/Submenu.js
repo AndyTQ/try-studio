@@ -19,62 +19,43 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ListItemLink(props) {
-  return <ListItem button component="a" {...props} />;
+const items = [
+  { icon: <SpotifyIcon />, name: "Spotify", enabled: true },
+  { icon: <AppleIcon />, name: "Apple Music (Coming)", enabled: false },
+  { icon: <YouTubeIcon />,  name: "PlaYoutube Music (Coming)", enabled: false },
+];
+
+const streamingServicePanel = () => {
+  return(
+    <div>
+        {items.map(item => (
+          <ListItem button disabled={!item.enabled}>
+            <ListItemIcon>
+              {item.icon}
+            </ListItemIcon>
+            <ListItemText primary={item.name} />
+          </ListItem>
+        ))}
+    </div>
+  );
 }
+
 
 export default function Submenu() {
   const classes = useStyles();
-
   return (
     <div className={classes.root}>
       <List
         subheader={
           <ListSubheader component="div">
             Streaming Service
-        </ListSubheader>
+          </ListSubheader>
         }
         component="nav"
         aria-label="main mailbox folders">
-        <ListItem button>
-          <ListItemIcon>
-            <SpotifyIcon />
-          </ListItemIcon>
-          <ListItemText primary="Spotify" />
-        </ListItem>
-        <ListItem button disabled='true'>
-          <ListItemIcon>
-            <AppleIcon />
-          </ListItemIcon>
-          <ListItemText primary="Apple Music (Coming)" />
-        </ListItem>
-        <ListItem button disabled='true'>
-          <ListItemIcon>
-            <YouTubeIcon />
-          </ListItemIcon>
-          <ListItemText primary="Youtube Music (Coming)" />
-        </ListItem>
+        {streamingServicePanel()}
       </List>
       <Divider />
-      <List
-        subheader={
-          <ListSubheader component="div">
-            Playlists
-        </ListSubheader>
-        } component="nav" aria-label="secondary mailbox folders">
-        <ListItemLink href="#recent">
-          <ListItemIcon>
-            <RecentIcon />
-          </ListItemIcon>
-          <ListItemText primary="Recent" />
-        </ListItemLink>
-        <ListItemLink href="#favourite">
-          <ListItemIcon>
-            <FavoriteIcon />
-          </ListItemIcon>
-          <ListItemText primary="Favourite" />
-        </ListItemLink>
-      </List>
     </div>
   );
 }

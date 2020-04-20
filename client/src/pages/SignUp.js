@@ -15,13 +15,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom'; // for navigating back to sign-in page if there's no auth.
 import { signUp } from '../redux/actions/authActions';
 
-const Copyright = () => (
-  <Typography variant="body2" color="textSecondary" align="center">
-    {'Copyright © Try Studio '}
-    {new Date().getFullYear()}
-    {'.'}
-  </Typography>
-);
+
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -71,23 +65,32 @@ const SignUp = props => {
   }
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign up
-        </Typography>
-        <form className={classes.form} onSubmit={handleSubmit}>
-          <Grid container spacing={2} justify="center">
-            <Grid item xs={12}>
-              <Typography variant="body2" color="error" align="center">
-                {authError ? <span>{authError}</span> : null}
-              </Typography>
-            </Grid>
-            <Grid item xs={12} sm={6}>
+    <>{signUpComponent(classes, handleChange, handleSubmit, authError)}</>
+  );
+};
+
+const signUpComponent = (classes, handleChange, handleSubmit, authError) => {
+  return (
+  <Container component="main" maxWidth="xs">
+  <CssBaseline />
+  <div className={classes.paper}>
+    <Avatar className={classes.avatar}>
+      <LockOutlinedIcon />
+    </Avatar>
+    <Typography component="h1" variant="h5">
+      Sign up
+    </Typography>
+    {signUpForm(classes, handleChange, handleSubmit, authError)}
+  </div>
+  <Box mt={5}>
+  </Box>
+  </Container>
+  )
+}
+
+const firstName = (handleChange) => {
+  return (
+  <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="fname"
                 name="firstName"
@@ -100,7 +103,12 @@ const SignUp = props => {
                 autoFocus
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            );
+}
+
+const lastName = (handleChange) => {
+  return(
+<Grid item xs={12} sm={6}>
               <TextField
                 variant="outlined"
                 required
@@ -112,19 +120,29 @@ const SignUp = props => {
                 onChange={handleChange}
               />
             </Grid>
-            <Grid item xs={12}>
+            );
+}
+
+const email = (handleChange) => {
+  return(
+  <Grid item xs={12}>
               <TextField
                 variant="outlined"
                 required
                 fullWidth
                 id="email"
-                label="Email Address"
+                label="Email"
                 name="email"
                 autoComplete="email"
                 onChange={handleChange}
               />
             </Grid>
-            <Grid item xs={12}>
+            );
+}
+
+const password = (handleChange) => {
+  return(
+  <Grid item xs={12}>
               <TextField
                 variant="outlined"
                 required
@@ -137,6 +155,30 @@ const SignUp = props => {
                 onChange={handleChange}
               />
             </Grid>
+            );
+}
+
+const signUpFormInputs = (handleChange) => {
+  return(
+  <>
+  {firstName(handleChange)}
+  {lastName(handleChange)}
+  {email(handleChange)}
+  {password(handleChange)}
+  </>
+  )
+}
+
+const signUpForm = (classes, handleChange, handleSubmit, authError) =>{
+  return (
+  <form className={classes.form} onSubmit={handleSubmit}>
+          <Grid container spacing={2} justify="center">
+            <Grid item xs={12}>
+              <Typography variant="body2" color="error" align="center">
+                {authError ? <span>{authError}</span> : null}
+              </Typography>
+            </Grid>
+            {signUpFormInputs(handleChange)}
           </Grid>
           <Button
             type="submit"
@@ -147,21 +189,22 @@ const SignUp = props => {
           >
             Sign Up
           </Button>
-          <Grid container justify="flex-end">
+          {signInPrompt()}
+        </form>
+    );
+}
+
+const signInPrompt = () => {
+  return (
+  <Grid container justify="flex-end">
             <Grid item>
               <Link href="/" variant="body2">
                 Already have an account? Sign in
               </Link>
             </Grid>
           </Grid>
-        </form>
-      </div>
-      <Box mt={5}>
-        <Copyright />
-      </Box>
-    </Container>
-  );
-};
+    );
+}
 
 const mapStateToProps = (state) => {
   return {

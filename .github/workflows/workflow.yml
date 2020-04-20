@@ -22,20 +22,22 @@ jobs:
       run: npm install
     - name: Run Client Tests
       working-directory: ./client
-      run: npm run test
+      run: yarn test
       env:
         CI: true
         NODE_ENV: test
-    - name: Submit Code Coverage
-      uses: paambaati/codeclimate-action@v2.5.7
-      env:
-        CC_TEST_REPORTER_ID: 41b92fdfe2a8d87abdcab0e4d79717d5a90175a04d7da644d4ba37f462c5051e
-      with:
-        coverageCommand: npm run coverage
-        debug: true
     - name: Install Server Dependencies
       working-directory: ./server
       run: npm install
     - name: Run Server Tests
       working-directory: ./server
       run: npm run test
+    - name: "Upload to CodeClimate"
+      env:
+        CC_TEST_REPORTER_ID: 1f39d77da93511f5e7b4357d2dbee38c1d98c5e784bebe1c4d26ede0eab7d152
+      run: |
+        export GIT_BRANCH="${GITHUB_REF##*/}"
+        curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+        chmod +x ./cc-test-reporter
+        ./cc-test-reporter format-coverage -t lcov client/coverage/lcov.info
+        ./cc-test-reporter upload-coverage

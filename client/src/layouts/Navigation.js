@@ -65,39 +65,20 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Navigation = props => {
-  const { auth, currUser, children, getUser} = props;
+const Navigation = ({ auth, currUser, children, getUser, signOut }) => {
   const classes = useStyles();
 
   useEffect(() => {
     getUser();
   }, []);
   
-  if (!auth.uid) {
-    return <Redirect to='/' />;
-  }
+  if (!auth.uid) return <Redirect to='/' />;
   
   return (
     <div className={classes.root}>
       <CssBaseline />
       <AppBar position="absolute" className={classes.appBar}>
-        <Toolbar className={classes.toolBar}>
-          <Typography component="h1" variant="h6" color="textSecondary" noWrap className={classes.title}>
-          
-          </Typography>
-          <Link href='/settings'>
-            <Typography className={classes.clickable} color="textPrimary" >
-              {(currUser == null ? 'Loading...' : currUser.firstName + ' ' + currUser.lastName)}
-            </Typography>
-          </Link>
-          <Divider orientation="vertical" flexItem />
-          <Button
-            className={classes.clickable}
-            startIcon={<MeetingRoomIcon />}
-            onClick={props.signOut}>
-            Sign Out
-            </Button>
-        </Toolbar>
+        {appbarContent(classes, signOut, currUser)}
       </AppBar>
       <Drawer
         className={classes.drawer}
@@ -106,24 +87,54 @@ const Navigation = props => {
           paper: classes.drawerPaper,
         }}
       >
-        <Toolbar className={classes.logoBar}>
-          <img
-            src={process.env.PUBLIC_URL + '/logo_white.svg'}
-            alt="Logo"
-            width={125}
-            height={60}
-          />
-        </Toolbar>
-        <div className={classes.drawerContainer}>
-          <List>{ListItems}</List>
-          <Divider />
-        </div>
+       {drawerContent(classes)}
       </Drawer>
       <main className={classes.content}>
         <Toolbar />
         {children}
       </main>
     </div>
+  );
+}
+
+const appbarContent = (classes, signOut, currUser) => {
+  return(
+  <div>
+  <Toolbar className={classes.toolBar}>
+  <Typography component="h1" variant="h6" color="textSecondary" noWrap className={classes.title} />
+  <Link href='/settings'>
+    <Typography className={classes.clickable} color="textPrimary" >
+      {(currUser == null ? 'Loading...' : currUser.firstName + ' ' + currUser.lastName)}
+    </Typography>
+  </Link>
+  <Divider orientation="vertical" flexItem />
+  <Button
+    className={classes.clickable}
+    startIcon={<MeetingRoomIcon />}
+    onClick={signOut}>
+    Sign Out
+    </Button>
+  </Toolbar>
+  </div>
+  );
+}
+
+const drawerContent = (classes) => {
+  return(
+  <div>
+  <Toolbar className={classes.logoBar}>
+    <img
+      src={process.env.PUBLIC_URL + '/logo_white.svg'}
+      alt="Logo"
+      width={125}
+      height={60}
+    />
+  </Toolbar>
+  <div className={classes.drawerContainer}>
+    <List>{ListItems}</List>
+    <Divider />
+  </div>
+  </div>
   );
 }
 

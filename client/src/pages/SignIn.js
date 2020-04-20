@@ -89,41 +89,29 @@ const useStyles = makeStyles((theme) => ({
 const SignInSide = props => {
   const classes = useStyles(Theme);
   const { auth, authError } = props;
-
-  const [state, setState] = useState({
-      email: '',
-      password: '',
-    }
-  );
-
+  const [state, setState] = useState({email: '', password: '',});
   const handleChange = (e) => {
     setState({
       ...state,
       [e.target.name]: e.target.value,
     });
   };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     props.signIn(state);
   };
-
-  if (auth.uid) {
-    return <Redirect to='/dashboard' />;
-  }
-
+  if (auth.uid) return <Redirect to='/dashboard' />;
   return (
-    <Grid container component="main" className={classes.root}>
+    displaySignIn(classes, handleChange, handleSubmit, authError)
+  );
+};
+
+const displaySignIn = (classes, handleChange, handleSubmit, authError) => {
+  return(
+  <Grid container component="main" className={classes.root}>
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} >
-      <div className={classes.mottoBox}>
-        <Typography component="h1" variant="h5" className={classes.motto}>
-          &quot;{"My business has been completed shifted by the infinite power from Try Studio. I believe that they will change the entire planet."}&quot;
-        </Typography>
-        <Typography component="h1" variant="h5" className={classes.motto} align='right'>
-          -- CEO, Macrohard
-        </Typography>
-      </div>
+        {mottoBox(classes)}
       </Grid>
       <Grid style={{backgroundColor: 'rgba(255,255,255,0.7)'}} item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
@@ -132,10 +120,43 @@ const SignInSide = props => {
             Already have an account? Sign in!
           </Typography>
           <Typography variant="body2" color="error" align="center">
-            { authError ? <span>{ authError }</span> : null }
+            { handleAuthError(authError) }
           </Typography>
           <form className={classes.form} onSubmit={handleSubmit}>
-            <TextField
+            {signInFormComponent(handleChange, classes)}
+          </form>
+        </div>
+      </Grid>
+    </Grid>
+  );
+}
+
+const handleAuthError = (authError) => {
+  if (authError) {
+    return <span>{ authError }</span>
+  }
+  else {
+    return null
+  }
+}
+
+const mottoBox = (classes) => {
+  return(
+  <div className={classes.mottoBox}>
+    <Typography component="h1" variant="h5" className={classes.motto}>
+      &quot;{"My business has been completed shifted by the infinite power from Try Studio. I believe that they will change the entire planet."}&quot;
+    </Typography>
+    <Typography component="h1" variant="h5" className={classes.motto} align='right'>
+      -- CEO, Macrohard
+    </Typography>
+  </div>
+  );
+}
+
+const signInFormComponent = (handleChange, classes) => {
+  return (
+    <div>
+    <TextField
               variant="outlined"
               margin="normal"
               required
@@ -187,12 +208,9 @@ const SignInSide = props => {
             <Box mt={5}>
               <Copyright />
             </Box>
-          </form>
-        </div>
-      </Grid>
-    </Grid>
+          </div>
   );
-};
+}
 
 const mapStateToProps = (state) => {
   return {

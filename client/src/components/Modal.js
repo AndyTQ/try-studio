@@ -18,21 +18,6 @@ const styles = (theme) => ({
   },
 });
 
-
-// const DialogTitle = withStyles(styles)((props) => {
-//   const { children, classes, onClose, ...other } = props;
-//   return (
-//     <MuiDialogTitle disableTypography className={classes.root} {...other}>
-//       <Typography variant="h6">{children}</Typography>
-//       {onClose ? (
-//         <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
-//           <CloseIcon/>
-//         </IconButton>
-//       ) : null}
-//     </MuiDialogTitle>
-//   );
-// });
-
 const DialogContent = withStyles((theme) => ({
   root: {
     padding: theme.spacing(2),
@@ -46,14 +31,11 @@ const DialogActions = withStyles((theme) => ({
   },
 }))(MuiDialogActions);
 
-
-
 export default function Modal(props) {
   return (
     <div>
       <Dialog fullWidth={true} maxWidth = {'md'} aria-labelledby="customized-dialog-title" open={props.open}>
         <DialogContent>
-          {/* <Table title="Licenses"/> */}
           { props.children }
         </DialogContent>
         <DialogActions>

@@ -4,6 +4,7 @@ import { firebaseReducer } from 'react-redux-firebase';
 import authReducer from './authReducer';
 import dashReducer from './dashReducer';
 import licenseReducer from './licenseReducer';
+import playlistReducer from './playlistReducer';
 
 const rootReducer = combineReducers({
   firestore: firestoreReducer,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   dash: dashReducer,
   license: licenseReducer,
+  playlist: playlistReducer
 });
 
 export default rootReducer;

@@ -9,14 +9,15 @@ chai.use(chaiHttp);
 chai.should();
 var expect = chai.expect;
 
-describe("Hello World", () => {
-  it("should return Hello World!", (done) => {
+describe("Get Playlist", () => {
+  it("should get playlist data", (done) => {
     chai.request(app)
-      .get('/')
+      .get('/playlist?playlistId=2kXKxaoBSxIR7JbUaL3w8I')
       .end((err, res) => {
         res.should.have.status(200);
         expect(res).to.be.json;
-        expect(res.body.text).to.equal("Hello World!");
+        expect(res.body.name).to.equal("고르곤졸라");
+        expect(res.body.owner).to.equal("Ryan Ro");
         done();
       });
   });
