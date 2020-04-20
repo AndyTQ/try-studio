@@ -19,10 +19,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ListItemLink(props) {
-  return <ListItem button component="a" {...props} />;
-}
-
 const items = [
   { icon: <SpotifyIcon />, name: "Spotify", enabled: true },
   { icon: <AppleIcon />, name: "Apple Music (Coming)", enabled: false },
