@@ -38,7 +38,6 @@ export default function Modal(props) {
     <div>
       <Dialog fullWidth={true} maxWidth = {'md'} aria-labelledby="customized-dialog-title" open={props.open}>
         <DialogContent>
-          {/* <Table title="Licenses"/> */}
           { props.children }
         </DialogContent>
         <DialogActions>

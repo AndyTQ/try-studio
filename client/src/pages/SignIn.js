@@ -120,7 +120,7 @@ const displaySignIn = (classes, handleChange, handleSubmit, authError) => {
             Already have an account? Sign in!
           </Typography>
           <Typography variant="body2" color="error" align="center">
-            { authError ? <span>{ authError }</span> : null }
+            { handleAuthError(authError) }
           </Typography>
           <form className={classes.form} onSubmit={handleSubmit}>
             {signInFormComponent(handleChange, classes)}
@@ -129,6 +129,15 @@ const displaySignIn = (classes, handleChange, handleSubmit, authError) => {
       </Grid>
     </Grid>
   );
+}
+
+const handleAuthError = (authError) => {
+  if (authError) {
+    return <span>{ authError }</span>
+  }
+  else {
+    return null
+  }
 }
 
 const mottoBox = (classes) => {
