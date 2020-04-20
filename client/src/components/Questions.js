@@ -58,7 +58,6 @@ function getSteps() {
 const areEqual = (prevProps, nextProps) => true;
 
 export default function Questions({ businessId }) {
-  // console.log("Rendered!")
   const classes = useStyles();
   const { handleSubmit, setValue, watch, control, register, errors } = useForm();
   // debugger;
@@ -119,10 +118,7 @@ export default function Questions({ businessId }) {
     }
   }
 
-  console.log("testtest!");
-
   useEffect(() => {
-    console.log("Rerendered!");
     if (!businessId){
       register({ name: "name" }, { required: true });
       register({ name: "location" }, { required: true });
@@ -131,7 +127,6 @@ export default function Questions({ businessId }) {
     }
     else {
       if (activeStep == 0){
-        console.log("test")
         let country;
         businesses.doc(businessId).get().then(doc => {
           let location = doc.data().location;
@@ -149,6 +144,34 @@ export default function Questions({ businessId }) {
       }
     }
   }, []);
+
+  const basicVenueQuestions = (classes, errors, control,register) => {
+    const questions = [{title: "Please enter the name of your business.", name: "name"},
+              {title: "What is the size of your venue? (in m²)", name: "size"}]
+    
+    return questions.map(question => {
+        return(
+        <div className={classes.questionCard}>
+          <label className={classes.questionTitle}>{question.title}</label>
+          <Controller
+            as={
+              <div className={classes.content}>
+                <FormControlLabel
+                  control={<TextField variant="outlined" label="Enter here" style={{width: 300, marginLeft: 10}}/>}
+                />
+              </div>
+            }
+            name={question.name}
+            control={control}
+            register={register}
+          />
+          {errors[question.name] && errors[question.name].type === "required" && (
+            <Typography variant="body1" color="error"> This field is required</Typography>
+          )}
+        </div>
+        )
+    })
+  }
 
   const nameField = (classes, errors, control,register) => {
     return(
@@ -173,28 +196,28 @@ export default function Questions({ businessId }) {
     );
   }
 
-  const sizeField = (classes, errors, control,register) => {
-    return(
-    <div className={classes.questionCard}>
-    <label className={classes.questionTitle}>What's your place's size (in m²)?</label>
-    <Controller
-      as={
-        <div className={classes.content}>
-          <FormControlLabel
-            control={<TextField variant="outlined" label="Enter your venue's size" style={{width: 300, marginLeft: 10}}/>}
-          />
-        </div>
-      }
-      name="size"
-      control={control}
-      register={register}
-    />
-    {errors.size && errors.size.type === "pattern" && (
-      <Typography variant="body1" color="error"> Your venue's size must be an integer</Typography>
-    )}
-  </div>
-  )
-  }
+  // const sizeField = (classes, errors, control,register) => {
+  //   return(
+  //   <div className={classes.questionCard}>
+  //   <label className={classes.questionTitle}>What's your place's size (in m²)?</label>
+  //   <Controller
+  //     as={
+  //       <div className={classes.content}>
+  //         <FormControlLabel
+  //           control={<TextField variant="outlined" label="Enter your venue's size" style={{width: 300, marginLeft: 10}}/>}
+  //         />
+  //       </div>
+  //     }
+  //     name="size"
+  //     control={control}
+  //     register={register}
+  //   />
+  //   {errors.size && errors.size.type === "pattern" && (
+  //     <Typography variant="body1" color="error"> Your venue's size must be an integer</Typography>
+  //   )}
+  // </div>
+  // )
+  // }
 
   const yesNoPanel = (classes) => {
     return (<div className={classes.content}>
@@ -231,8 +254,7 @@ export default function Questions({ businessId }) {
 </form>) : <></>
 
   const newBusiness = (<form onSubmit={handleSubmit(onSubmit)} ref={(ref) => { setbusinessForm(ref); }}>
-  {nameField(classes, errors, control,register)}
-  {sizeField(classes, errors, control,register)}
+  {basicVenueQuestions(classes, errors, control,register)}
   <div className={classes.questionCard}>
     <label>Where is your business?</label>
     <Controller
@@ -317,7 +339,6 @@ export default function Questions({ businessId }) {
         return (
           <div>
             {data ? <Summary className={classes.content} data={data}/> : <></>}
-            
             <Typography className={classes.content} component="h1" variant="body1" color="inherit" align='center'>
               {businessId? "How would you like to pay?" : "Please click 'NEXT' if you are satisfied with your information."}
             </Typography>
@@ -386,17 +407,11 @@ export default function Questions({ businessId }) {
     // Event triggers after users finished each step.
     switch (activeStep) {
       case 0:
-        if (businessId){
-          licenseForm.dispatchEvent(new Event('submit'));
-        }
-        else{
-          businessForm.dispatchEvent(new Event('submit'));
-        }
+        businessId ? licenseForm.dispatchEvent(new Event('submit')) : businessForm.dispatchEvent(new Event('submit'));
         break;
       case 1:
         // Submit data to firestore
         if (!businessId){
-          console.log("Not!")
           let newId = businesses.doc().id;
           data.licenses = [];
           data.id = newId;
@@ -405,27 +420,28 @@ export default function Questions({ businessId }) {
             }
           );
         } else {
-          let date = new Date();
-          let y = date.getFullYear();
-          let m = date.getMonth() + 1;
-          let d = date.getDate();
-          let newId = licenses.doc().id;
-          data.business = businessId;
-          data.date = m + '/' + d + '/' + y;
-          licenses.doc(newId).set(data)
-          .then(()=>{
-              addUserData("licenses", newId)
-            }
-          )
+            fireStoreAddLicense();
           }
         break;
-      case 2:
-        
-        break;
       default:
-        break;
+        handleReset();
     }
   };
+
+  const fireStoreAddLicense = () => {
+    let date = new Date();
+    let y = date.getFullYear();
+    let m = date.getMonth() + 1;
+    let d = date.getDate();
+    let newId = licenses.doc().id;
+    data.business = businessId;
+    data.date = m + '/' + d + '/' + y;
+    licenses.doc(newId).set(data)
+    .then(()=>{
+        addUserData("licenses", newId)
+      }
+    )
+  }
 
   const addUserData = (type, newId) => {
     let uid = firebase.auth().currentUser.uid;
