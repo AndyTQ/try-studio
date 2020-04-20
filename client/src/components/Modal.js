@@ -31,8 +31,6 @@ const DialogActions = withStyles((theme) => ({
   },
 }))(MuiDialogActions);
 
-
-
 export default function Modal(props) {
   return (
     <div>
