@@ -89,27 +89,26 @@ const useStyles = makeStyles((theme) => ({
 const SignInSide = props => {
   const classes = useStyles(Theme);
   const { auth, authError } = props;
-
   const [state, setState] = useState({email: '', password: '',});
-
   const handleChange = (e) => {
     setState({
       ...state,
       [e.target.name]: e.target.value,
     });
   };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     props.signIn(state);
   };
-
-  if (auth.uid) {
-    return <Redirect to='/dashboard' />;
-  }
-
+  if (auth.uid) return <Redirect to='/dashboard' />;
   return (
-    <Grid container component="main" className={classes.root}>
+    displaySignIn(classes, handleChange, handleSubmit, authError)
+  );
+};
+
+const displaySignIn = (classes, handleChange, handleSubmit, authError) => {
+  return(
+  <Grid container component="main" className={classes.root}>
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} >
       <div className={classes.mottoBox}>
@@ -137,7 +136,7 @@ const SignInSide = props => {
       </Grid>
     </Grid>
   );
-};
+}
 
 const signInFormComponent = (handleChange, classes) => {
   return (
