@@ -100,7 +100,7 @@ const SignInSide = props => {
     e.preventDefault();
     props.signIn(state);
   };
-  if (auth.uid) return <Redirect to='/dashboard' />;
+  if (auth.uid) return <Redirect to='/try-studio/dashboard' />;
   return (
     displaySignIn(classes, handleChange, handleSubmit, authError)
   );
