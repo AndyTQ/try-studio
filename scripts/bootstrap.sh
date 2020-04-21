@@ -30,11 +30,6 @@ if [ ! "$(uname)" == "Darwin" ]; then
   exit 1
 fi
 
-if [[ ! "$PWD" =~ scripts ]]; then
-  echo "Please run in the scripts folder"
-  exit 1
-fi
-    
 if [ ! which brew > /dev/null 2>&1 ]; then
   install_homebrew
 else
@@ -59,6 +54,10 @@ else
   echo "Yarn already installed"
 fi
 
+SCRIPTPATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+echo "Entering $SCRIPTPATH"
+pushd $SCRIPTPATH
+
 if [ ! -f ./.env ]; then
   copy_env
 else
@@ -66,3 +65,5 @@ else
 fi
 
 cd .. && docker-compose up -d --build 
+
+popd
