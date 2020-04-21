@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/try-studio/static/css/main.5ecd60fb.chunk.css",
-    "main.js": "/try-studio/static/js/main.4e93f1b0.chunk.js",
-    "main.js.map": "/try-studio/static/js/main.4e93f1b0.chunk.js.map",
+    "main.js": "/try-studio/static/js/main.5801abdd.chunk.js",
+    "main.js.map": "/try-studio/static/js/main.5801abdd.chunk.js.map",
     "runtime-main.js": "/try-studio/static/js/runtime-main.a40ae208.js",
     "runtime-main.js.map": "/try-studio/static/js/runtime-main.a40ae208.js.map",
     "static/js/2.fce760f1.chunk.js": "/try-studio/static/js/2.fce760f1.chunk.js",
     "static/js/2.fce760f1.chunk.js.map": "/try-studio/static/js/2.fce760f1.chunk.js.map",
     "index.html": "/try-studio/index.html",
-    "precache-manifest.14d23ccab5469417532756ac8a2c9135.js": "/try-studio/precache-manifest.14d23ccab5469417532756ac8a2c9135.js",
+    "precache-manifest.2e19472d2af29d1079c28a5c99d2a338.js": "/try-studio/precache-manifest.2e19472d2af29d1079c28a5c99d2a338.js",
     "service-worker.js": "/try-studio/service-worker.js",
     "static/css/main.5ecd60fb.chunk.css.map": "/try-studio/static/css/main.5ecd60fb.chunk.css.map",
     "static/js/2.fce760f1.chunk.js.LICENSE.txt": "/try-studio/static/js/2.fce760f1.chunk.js.LICENSE.txt",
@@ -18,6 +18,6 @@
     "static/js/runtime-main.a40ae208.js",
     "static/js/2.fce760f1.chunk.js",
     "static/css/main.5ecd60fb.chunk.css",
-    "static/js/main.4e93f1b0.chunk.js"
+    "static/js/main.5801abdd.chunk.js"
   ]
 }
