@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Redirect } from 'react-router-dom';
 import { Licenses, SignIn, SignUp, Dashboard, Playlists, Settings } from './pages';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { HashRouter as Router } from 'react-router-dom';
 import RouteWithLayout from './RouteWithLayout';
 import { Navigation as NavigationLayout } from './layouts';
 import { Default as DefaultLayout } from './layouts';
@@ -13,7 +13,7 @@ import history from './history';
  */
 const Routes = () => {
   return (
-    <Router history={history}>
+    <Router>
       <Switch>
         <RouteWithLayout exact path="/try-studio" component={SignIn} layout={DefaultLayout} />
         <RouteWithLayout path="/try-studio/dashboard" component={Dashboard} layout={NavigationLayout} />
