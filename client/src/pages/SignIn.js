@@ -117,7 +117,7 @@ const displaySignIn = (classes, handleChange, handleSubmit, authError) => {
         <div className={classes.paper}>
           <img src={Logo} className={classes.logo} alt="Try Studio" />
           <Typography component="h1" color="textSecondary" variant="h5" style={{fontWeight: 400}}>
-            Already have an account? Sign in!
+            Get your license in a snap. Sign in now!
           </Typography>
           <Typography variant="body2" color="error" align="center">
             { handleAuthError(authError) }
