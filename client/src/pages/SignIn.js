@@ -144,10 +144,10 @@ const mottoBox = (classes) => {
   return(
   <div className={classes.mottoBox}>
     <Typography component="h1" variant="h5" className={classes.motto}>
-      &quot;{"My business has been completed shifted by the infinite power from Try Studio. I believe that they will change the entire planet."}&quot;
+      &quot;{“Music is the language of the spirit. It opens the secret of life bringing peace, abolishing strife.”}&quot;
     </Typography>
     <Typography component="h1" variant="h5" className={classes.motto} align='right'>
-      -- CEO, Macrohard
+      -- Kahlil Gibran
     </Typography>
   </div>
   );
