@@ -1,6 +1,5 @@
 [![Actions Status](https://github.com/AndyTQ/try-studio/workflows/nodejs/badge.svg)](https://github.com/AndyTQ/try-studio/actions)
 [![Website shields.io](https://img.shields.io/website-up-down-green-red/http/shields.io.svg)](http://shields.io/)
-[![Maintainability](https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/maintainability)]()
 
 # Try Studio
 
