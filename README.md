@@ -12,3 +12,12 @@ Table of Contents
 - [Product & Research](./product_research/)
     - [Architecture Diagram](./product_research/architecture_diagram.md)
     - [Roadmap](./product_research/roadmap.md)
+   
+People at Try Studio
+---
+
+- [Darren Moore, Computer Science](./darren_moore.md)
+- [Ryan Ro, Computer Science](./ryan_ro.md)
+- [Tianquan Di, Computer Science](./tianquan_di.md)
+- [Tim Zhang, Computer Science](./tim_zhang.md)
+- [Yuhao Kan, Computer Science](./yuhao_kan.md)
