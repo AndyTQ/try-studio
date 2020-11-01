@@ -24,6 +24,6 @@ People at Try Studio
 
 # Architecture Diagram
 
-![Architecture Diagram](./product_search/architecture_diagram.png)
+![Architecture Diagram](./product_research/architecture_diagram.png)
 
 Further stack details on [StackShare](https://stackshare.io/dcsil/try-studio)
