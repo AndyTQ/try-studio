@@ -16,8 +16,8 @@ Table of Contents
 People at Try Studio
 ---
 
-- [Darren Moore, Computer Science](./darren_moore.md)
-- [Ryan Ro, Computer Science](./ryan_ro.md)
-- [Tianquan Di, Computer Science](./tianquan_di.md)
-- [Tim Zhang, Computer Science](./tim_zhang.md)
-- [Yuhao Kan, Computer Science](./yuhao_kan.md)
+- [Darren Moore, Computer Science](./team/darren_moore.md)
+- [Ryan Ro, Computer Science](./team/ryan_ro.md)
+- [Tianquan Di, Computer Science](./team/tianquan_di.md)
+- [Tim Zhang, Computer Science](./team/tim_zhang.md)
+- [Yuhao Kan, Computer Science](./team/yuhao_kan.md)
