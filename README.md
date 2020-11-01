@@ -1,4 +1,4 @@
-[![Actions Status](https://github.com/AndyTQ/try-studio/workflows/Node.js CI/badge.svg)](https://github.com/{owner}/{repo}/actions)
+[![Actions Status](https://github.com/AndyTQ/try-studio/workflows/nodejs/badge.svg)](https://github.com/AndyTQ/try-studio/actions)
 
 
 # Try Studio
