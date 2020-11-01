@@ -6,7 +6,7 @@
 
 ![Team Logo](./logo.png)
 
-Try Studio is a company founded in the Software for the Global Music Business industry. Try Studio aims to provide a one-stop shop for music licensing.
+Try Studio is a company founded in the Software for the Global Music Business industry, in the Department of Computer Science Innovation Lab @ University of Toronto. Try Studio aims to provide a one-stop shop for music licensing.
 
 Table of Contents
 ---
@@ -30,7 +30,7 @@ People at Try Studio
 
 ![Architecture Diagram](./product_research/architecture_diagram.png)
 
-Further stack details on [StackShare](https://stackshare.io/dcsil/try-studio)
+Further stack details are also available on [StackShare](https://stackshare.io/dcsil/try-studio).
 
 # Getting Started
 
@@ -39,4 +39,4 @@ If you need to rebuild the project after making a chance, run `rebuild.sh` to ru
 
 # Demo website
 
-A live demo of the project is up at https://dcsil.github.io/try-studio/#/
+A live demo of the project is up at https://dcsil.github.io/try-studio/
