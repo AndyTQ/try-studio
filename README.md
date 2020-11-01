@@ -31,3 +31,8 @@ People at Try Studio
 ![Architecture Diagram](./product_research/architecture_diagram.png)
 
 Further stack details on [StackShare](https://stackshare.io/dcsil/try-studio)
+
+# Setting up the environment
+
+`cd` into the script directory, and run `bootstrap.sh` to build the project.
+If you need to rebuild the project after making a chance, run `rebuild.sh` to run the build again.
