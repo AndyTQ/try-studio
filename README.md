@@ -21,3 +21,9 @@ People at Try Studio
 - [Tianquan Di, Computer Science](./team/tianquan_di.md)
 - [Tim Zhang, Computer Science](./team/tim_zhang.md)
 - [Yuhao Kan, Computer Science](./team/yuhao_kan.md)
+
+# Architecture Diagram
+
+![Architecture Diagram](./architecture_diagram.png)
+
+Further stack details on [StackShare](https://stackshare.io/dcsil/try-studio)
