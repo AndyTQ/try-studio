@@ -32,7 +32,11 @@ People at Try Studio
 
 Further stack details on [StackShare](https://stackshare.io/dcsil/try-studio)
 
-# Setting up the environment
+# Getting Started
 
 `cd` into the script directory, and run `bootstrap.sh` to build the project.
 If you need to rebuild the project after making a chance, run `rebuild.sh` to run the build again.
+
+# Demo website
+
+A live demo of the project is up at https://dcsil.github.io/try-studio/#/
