@@ -76,27 +76,10 @@ export default function Questions({ businessId }) {
   const [ regionData, setRegionData ] = React.useState(null);
 
   // Payment
-
   const [ paid, setPaid ] = React.useState(false);
 
   let businesses = firestore.collection('businesses');
   let licenses = firestore.collection('licenses');
-
-  
-
-  const convertAnswer = (data) => {
-    if (questionnaire){
-      let res = ""
-      for (let i = 0; i < questionnaire.length; i++){
-        res += data[questionnaire[i]];
-      }
-      return res;
-    }
-    else {
-      console.error("Problems in converting answers. Questionnaire does not exist!");
-    }
-  }
-
   const steps = getSteps();
 
   const onSubmit = (newData) => {
@@ -107,9 +90,13 @@ export default function Questions({ businessId }) {
     }
     else {
         firestore.collection('questions').doc(country).get().then(doc => {
-    
-            let summaryData = doc.data().tariff[convertAnswer(newData)];
-            summaryData.cmo = doc.data().cmo;
+            let summaryData;
+            summaryData = {
+              price: 13,
+              type: "07B",
+              validity: "1 year",
+              cmo: doc.data().cmo
+            };
             setData(summaryData,
               setActiveStep(1)
             );
@@ -126,32 +113,30 @@ export default function Questions({ businessId }) {
     if (!businessId){
       register({ name: "name" }, { required: true });
       register({ name: "location" }, { required: true });
+      register({ name: "country" }, { required: true });
       register({ name: "type" }, { required: true });
       register({ name: "size" }, { pattern: /[0-9]/});
     }
     else {
       if (activeStep == 0){
-        let country;
         businesses.doc(businessId).get().then(doc => {
-          let location = doc.data().location;
-          country = getCountry(location);
-          setCountry(country);
-        }).then(() => {
-            firestore.collection('questions').doc(country).get().then(doc =>{
-              setRegionData(doc.data());
-              setCmo(doc.data().cmo);
-              setQuestionnaire(doc.data().questionnaire);
-            }
+          console.log(doc.data().country);
+          setCountry(doc.data().country);
+          firestore.collection('questions').doc(doc.data().country).get().then(doc =>{
+            setRegionData(doc.data());
+            setCmo(doc.data().cmo);
+            setQuestionnaire(doc.data().questionnaire);
+          }
           )
-        }
-        );
+        })
       }
     }
   }, []);
 
   const basicVenueQuestions = (classes, errors, control,register) => {
     const questions = [{title: "Please enter the name of your business.", name: "name"},
-              {title: "What is the size of your venue? (in m²)", name: "size"}]
+              {title: "What is the size of your venue? (in m²)", name: "size"},
+              {title: "What is the address of your business?", name: "location"}]
     
     return questions.map(question => {
         return(
@@ -176,52 +161,6 @@ export default function Questions({ businessId }) {
         )
     })
   }
-
-  const nameField = (classes, errors, control,register) => {
-    return(
-    <div className={classes.questionCard}>
-      <label className={classes.questionTitle}>Please enter the name of your business.</label>
-      <Controller
-        as={
-          <div className={classes.content}>
-            <FormControlLabel
-              control={<TextField variant="outlined" label="Type the name here" style={{width: 300, marginLeft: 10}}/>}
-            />
-          </div>
-        }
-        name="name"
-        control={control}
-        register={register}
-      />
-      {errors.name && errors.name.type === "required" && (
-        <Typography variant="body1" color="error"> This field is required</Typography>
-      )}
-    </div>
-    );
-  }
-
-  // const sizeField = (classes, errors, control,register) => {
-  //   return(
-  //   <div className={classes.questionCard}>
-  //   <label className={classes.questionTitle}>What's your place's size (in m²)?</label>
-  //   <Controller
-  //     as={
-  //       <div className={classes.content}>
-  //         <FormControlLabel
-  //           control={<TextField variant="outlined" label="Enter your venue's size" style={{width: 300, marginLeft: 10}}/>}
-  //         />
-  //       </div>
-  //     }
-  //     name="size"
-  //     control={control}
-  //     register={register}
-  //   />
-  //   {errors.size && errors.size.type === "pattern" && (
-  //     <Typography variant="body1" color="error"> Your venue's size must be an integer</Typography>
-  //   )}
-  // </div>
-  // )
-  // }
 
   const yesNoPanel = (classes) => {
     return (<div className={classes.content}>
@@ -259,30 +198,38 @@ export default function Questions({ businessId }) {
 
   const newBusiness = (<form onSubmit={handleSubmit(onSubmit)} ref={(ref) => { setbusinessForm(ref); }}>
   {basicVenueQuestions(classes, errors, control,register)}
+  
   <div className={classes.questionCard}>
-    <label>Where is your business?</label>
+    <label className={classes.questionTitle}>Which country is your venue located in?</label>
     <Controller
       as={
         <div className={classes.content}>
-          <Location onChange={(location) => {
-            setValue("location", location)
-          }} />
+            <RadioGroup aria-label="" name="">
+              <FormControlLabel
+                value="us"
+                control={<Radio />}
+                label="US"
+              />
+              <FormControlLabel
+                value="canada"
+                control={<Radio />}
+                label="Canada"
+              />
+            </RadioGroup>
         </div>
       }
-      name="location"
+      name="country"
       control={control}
       register={register}
     />
-    {errors.location && errors.location.type === "required" && (
-      <Typography variant="body1" color="error"> This field is required</Typography>
-    )}
-  </div>
+  </div> 
+  
   <div className={classes.questionCard}>
     <label className={classes.questionTitle}>Which of the following best describes the type of your event?</label>
     <Controller
       as={
         <div className={classes.content}>
-            <RadioGroup aria-label="gender" name="gender1">
+            <RadioGroup aria-label="" name="">
               <FormControlLabel
                 value="concert"
                 control={<Radio />}
@@ -320,11 +267,7 @@ export default function Questions({ businessId }) {
       control={control}
       register={register}
     />
-    {errors.location && errors.location.type === "required" && (
-      <Typography variant="body1" color="error"> This field is required</Typography>
-    )}
   </div> 
-  {/* <DevTool control={control} /> set up the dev tool */}
 </form>);
   
   const getStepContent = (step) => {
@@ -468,17 +411,6 @@ export default function Questions({ businessId }) {
     setActiveStep(0);
   };
 
-
-  const newBusinessCountryCheck = () => {
-    let currentCountry = watch("location") ? getCountry(watch("location")) : null;
-    console.log(currentCountry)
-    if (currentCountry){
-      return !(currentCountry == "Canada" || currentCountry == "USA");
-    } else {
-      return true;
-    }
-  }
-
   return (
     <div className={classes.root}>
       <Stepper activeStep={activeStep} className={classes.stepper}>
@@ -508,14 +440,12 @@ export default function Questions({ businessId }) {
             <Button
               variant="contained"
               color="primary"
-              disabled={activeStep === 0 ? (businessId ? false : (newBusinessCountryCheck())) : false}
               onClick={handleNext}
               className={classes.button}
             >
               Next
           </Button></div>) : <></>}
           <div style={{marginTop: 10}}>
-            {(activeStep === 0 && !businessId) ? (newBusinessCountryCheck() ? "Try Studio only supports Canada and USA. Please select your location in Canada/USA to continue." : "") : ""}
           </div>
           </div>
         </div>

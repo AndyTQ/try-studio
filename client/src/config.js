@@ -1,12 +1,12 @@
 export const firebase = {
-  apiKey: "AIzaSyAu2cSkMNMBjqfmcthnpU0Sx1NI5DQotJc",
-  authDomain: "try-studio.firebaseapp.com",
-  databaseURL: "https://try-studio.firebaseio.com",
-  projectId: "try-studio",
-  storageBucket: "try-studio.appspot.com",
-  messagingSenderId: "613158783101",
-  appId: "1:613158783101:web:bd1e63de26b1f9289b4914",
-  measurementId: "G-LJK88KNL2R"
+  apiKey: "AIzaSyB5_1dx708bZMfIVXy6fcWQmXGpR_MdN3Q",
+  authDomain: "try-studio-274003.firebaseapp.com",
+  databaseURL: "https://try-studio-274003.firebaseio.com",
+  projectId: "try-studio-274003",
+  storageBucket: "try-studio-274003.appspot.com",
+  messagingSenderId: "408040350365",
+  appId: "1:408040350365:web:11dc677f9dbe52add7ea74",
+  measurementId: "G-J6X24CEF4C"
 };
   
 export const reduxFirebase = {

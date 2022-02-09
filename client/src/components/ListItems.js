@@ -22,7 +22,7 @@ const items = [
 /***** Main list items in the navigation bar *****/
 const ListItems = items.map((item) =>
   <div key={item.name}>
-    <ListItem button component={Link} to={"/try-studio/" + item.field} style={{ height: '45px' }}>
+    <ListItem button component={Link} to={"/" + item.field} style={{ height: '45px' }}>
       <ListItemIcon style={{ marginLeft: '0.5em', color: "rgb(238,238,238)", opacity: 0.5 }}>
         {item.icon}
       </ListItemIcon>

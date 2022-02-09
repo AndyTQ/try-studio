@@ -100,7 +100,7 @@ const SignInSide = props => {
     e.preventDefault();
     props.signIn(state);
   };
-  if (auth.uid) return <Redirect to='/try-studio/dashboard' />;
+  if (auth.uid) return <Redirect to='/dashboard' />;
   return (
     displaySignIn(classes, handleChange, handleSubmit, authError)
   );
@@ -144,7 +144,7 @@ const mottoBox = (classes) => {
   return(
   <div className={classes.mottoBox}>
     <Typography component="h1" variant="h5" className={classes.motto}>
-      &quot;{“Music is the language of the spirit. It opens the secret of life bringing peace, abolishing strife.”}&quot;
+      &quot;{"Music is the language of the spirit. It opens the secret of life bringing peace, abolishing strife."}&quot;
     </Typography>
     <Typography component="h1" variant="h5" className={classes.motto} align='right'>
       -- Kahlil Gibran

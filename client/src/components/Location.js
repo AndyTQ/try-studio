@@ -35,7 +35,7 @@ export default function Location(props) {
   const [options, setOptions] = React.useState([]);
   const [curAddress, setCurAddress] = React.useState('');
   const loaded = React.useRef(false);
-  const API = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDVkPCtEZpk_6NrNsqZqpbCW7dtBYTFHII&libraries=places';
+  const API = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCXD7b4isZO2MJ3HGngJqlhkAQeYTrJJLY&libraries=places';
 
   if (typeof window !== 'undefined' && !loaded.current) {
     if (!document.querySelector('#google-maps')) {
