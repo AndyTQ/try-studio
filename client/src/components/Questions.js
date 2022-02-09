@@ -17,7 +17,6 @@ import {
   Radio,
 } from "@material-ui/core";
 
-import Location from "./Location";
 
 const useStyles = makeStyles((theme) => ({
   root: {
