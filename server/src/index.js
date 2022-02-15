@@ -350,8 +350,6 @@ app.delete("/api/delete/business", jsonParser, (req, res) => {
       const businessId = req.query.id;
       const uid = test ? "pK9cr35PnFepzbxNsuKwt6rtLhE3" : req.user.uid;
       const err = validateId(businessId);
-
-      let err = validateId(uid);
       if (err != "") return res.status(400).send(err);
 
       // Check whether the uid exists.
