@@ -7,9 +7,7 @@ const Licenses = ({licenses, getLicenses, businessId}) => {
 
   useEffect(() => {
         getLicenses(businessId);
-      }, []);
-    
-  
+      }, []);  
 
   return (
     <Table licenses={licenses} businessId={businessId} title="My Licenses" />

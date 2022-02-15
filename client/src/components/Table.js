@@ -66,13 +66,13 @@ const Table = ({ title, licenses, businessId, playlists }) => {
   const [allowAdd, setAllowAdd] = useState(false);
   
   const dataColumns = playlists ? [
-    buildColumn('Playlist ID', 'playlistId', 'string'),
+    buildColumn('Playlist ID', 'spotifyId', 'string'),
     buildColumn('Playlist Name', 'name', 'string'),
     buildColumn('Playlist Owner', 'owner', 'string'),
     buildColumn('Playlist Track Count', 'count', 'numeric'),
   ] : [
-    buildColumn('License ID', 'licenseId', 'string'),
-    buildColumn('Business ID', 'business', 'string'),
+    buildColumn('License ID', 'id', 'string'),
+    buildColumn('Business ID', 'businessId', 'string'),
     buildColumn('Licensing Company', 'cmo', 'string'),
     buildColumn('Price', 'price', 'numeric'),
     buildColumn('Registration Date', 'date', 'string'),
@@ -106,38 +106,52 @@ const Table = ({ title, licenses, businessId, playlists }) => {
       }
     })
   }
-  const addUserData = (type, newId) => {
-    let uid = firebase.auth().currentUser.uid;
-    firestore.collection('users').doc(uid).get().then((doc) => { 
-      let userData = doc.data();
-      userData[type].push(newId);
-      firestore.collection('users').doc(uid).set(userData);
-    }
-    );
-  }
 
   const handleClick = () => {
-    let playlistIds = playlists.map(i => i.playlistId);
+    let playlistIds = playlists.map(i => i.spotifyId);
     if (playlistIds.includes(textInput.current.value)) {
       return;
     }
-    fetch(`http://try-studio.herokuapp.com/playlist?playlistId=${textInput.current.value}`).then(res => res.json()).then(data => {
+    fetch(`http://localhost:5000/api/playlist/read?playlistId=${textInput.current.value}`).then(res => res.json()).then(data => {
         fireStoreAddPlaylist(textInput.current.value, data);
     });
   }
 
   const fireStoreAddPlaylist = (playlistId, playlistInfo) => {
-    let data = {};
-    let newId = playlistRef.doc().id;
-    data.playlistId = playlistId;
-    data.name = playlistInfo.name;
-    data.owner = playlistInfo.owner;
-    data.count = playlistInfo.songs;
-    playlistRef.doc(newId).set({...data})
-    .then(()=>{
-        addUserData("playlists", newId)
+    // let data = {};
+    // let newId = playlistRef.doc().id;
+    // data.playlistId = playlistId;
+    // data.name = playlistInfo.name;
+    // data.owner = playlistInfo.owner;
+    // data.count = playlistInfo.songs;
+    // playlistRef.doc(newId).set({...data})
+    // .then(()=>{
+    //     addPlaylistUserData(newId)
+    //   }
+    // )
+    const endpoint = "http://localhost:5000/api/playlist/create";
+    const payload = {
+      count: playlistInfo.songs,
+      name: playlistInfo.name,
+      owner: playlistInfo.owner,
+      spotifyId: playlistId
+    };
+    debugger; 
+    fetch(endpoint , {
+      method: 'POST',
+      headers:{
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    }).then(async res => {
+      if(!res.ok) {
+        console.error("Error in adding playlist");
       }
-    )
+      else {
+        console.log("Playlist successfully added");
+        console.log(res);
+      }   
+    })
   }
 
 

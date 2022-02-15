@@ -107,7 +107,10 @@ const addNewCard = (classes, setShowNewBusiness, showNewBusiness) => {
         </Typography>
       </div>
     </Button>
-    <Modal name="Licenses" open={showNewBusiness} handleClose={() => {setShowNewBusiness(false);}}> 
+    <Modal name="Licenses" open={showNewBusiness} handleClose={() => {
+      setShowNewBusiness(false);
+      window.location.reload();
+    }}> 
       <Questions />
     </Modal>
   </Card>

@@ -16,6 +16,7 @@ import {
   FormControlLabel,
   Radio,
 } from "@material-ui/core";
+import { getBusinesses } from '../redux/actions/dashActions';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -72,13 +73,11 @@ export default function Questions({ businessId }) {
   const [ country, setCountry ] = React.useState(null);
   const [ cmo, setCmo ] = React.useState(null);
   const [ questionnaire, setQuestionnaire ] = React.useState(null);
-  const [ regionData, setRegionData ] = React.useState(null);
+  // const [ regionData, setRegionData ] = React.useState(null);
 
   // Payment
-  const [ paid, setPaid ] = React.useState(false);
+  const [ price, setPrice ] = React.useState(null);
 
-  let businesses = firestore.collection('businesses');
-  let licenses = firestore.collection('licenses');
   const steps = getSteps();
 
   const onSubmit = (newData) => {
@@ -88,24 +87,34 @@ export default function Questions({ businessId }) {
       );
     }
     else {
-        firestore.collection('questions').doc(country).get().then(doc => {
-            let summaryData;
-            summaryData = {
-              price: 13,
-              type: "07B",
-              validity: "1 year",
-              cmo: doc.data().cmo
-            };
-            setData(summaryData,
-              setActiveStep(1)
-            );
-        }
-      )
-    }
-  }
+      // debugger;
+      for (let key of Object.keys(newData)) {
+        debugger;
+        newData[key] = newData[key] == "1" ? true : false;
+      }
 
-  const getCountry = (location) => {
-    return location.split(", ").slice(-1).pop()
+      fetch(`http://localhost:5000/api/license/price?business_id=${businessId}&answer=${JSON.stringify(newData)}&length=${12}` , {
+        method: 'GET',
+        headers:{
+          'Content-Type': 'application/json'
+        },
+      }).then(async res => {
+        const currPrice = await res.text();
+        const convertedPrice = parseFloat(currPrice).toFixed(2);
+        await setPrice(convertedPrice);
+        let summaryData;
+        debugger;
+        summaryData = {
+          price: currPrice,
+          type: "DEF",
+          validity: "12" + " " + "months",
+          cmo: country == "us" ? "USCMO" : "SOCAN"
+        };
+        setData(summaryData,
+          setActiveStep(1)
+        );
+      })
+    }
   }
 
   useEffect(() => {
@@ -118,16 +127,16 @@ export default function Questions({ businessId }) {
     }
     else {
       if (activeStep == 0){
-        businesses.doc(businessId).get().then(doc => {
-          console.log(doc.data().country);
-          setCountry(doc.data().country);
-          firestore.collection('questions').doc(doc.data().country).get().then(doc =>{
-            setRegionData(doc.data());
-            setCmo(doc.data().cmo);
-            setQuestionnaire(doc.data().questionnaire);
+        fetch(`http://localhost:5000/api/read/business?business_id=${businessId}`).then(async res => {
+            res = await res.json();
+            console.log(res);
+            setCountry(res.country);
+            fetch(`http://localhost:5000/api/questions?country=${res.country}`).then(async res => {
+              res = await res.json()
+              setQuestionnaire(res);
+            })
           }
-          )
-        })
+        )
       }
     }
   }, []);
@@ -178,8 +187,8 @@ export default function Questions({ businessId }) {
   </div>)
   }
 
-  const newLicense = regionData ? (<form onSubmit={handleSubmit(onSubmit)} ref={(ref) => { setlicenseForm(ref); }}>
-  {regionData.questionnaire.map((question) => 
+  const newLicense = questionnaire ? (<form onSubmit={handleSubmit(onSubmit)} ref={(ref) => { setlicenseForm(ref); }}>
+  {questionnaire.map((question) => 
     <div className={classes.questionCard}>
     <label className={classes.questionTitle}>{question}</label>
       <Controller
@@ -194,7 +203,6 @@ export default function Questions({ businessId }) {
     </div> 
   )} 
 </form>) : <></>
-
   const newBusiness = (<form onSubmit={handleSubmit(onSubmit)} ref={(ref) => { setbusinessForm(ref); }}>
   {basicVenueQuestions(classes, errors, control,register)}
   
@@ -358,13 +366,7 @@ export default function Questions({ businessId }) {
       case 1:
         // Submit data to firestore
         if (!businessId){
-          let newId = businesses.doc().id;
-          data.licenses = [];
-          data.id = newId;
-          businesses.doc(newId).set(data).then(()=>{
-            addUserData("businesses", newId)
-            }
-          );
+          fireStoreAddBusiness();
         } else {
             fireStoreAddLicense();
           }
@@ -374,19 +376,56 @@ export default function Questions({ businessId }) {
     }
   };
 
-  const fireStoreAddLicense = () => {
-    let date = new Date();
-    let y = date.getFullYear();
-    let m = date.getMonth() + 1;
-    let d = date.getDate();
-    let newId = licenses.doc().id;
-    data.business = businessId;
-    data.date = m + '/' + d + '/' + y;
-    licenses.doc(newId).set(data)
-    .then(()=>{
-        addUserData("licenses", newId)
+  const fireStoreAddBusiness = () => {
+    // call the add license API!
+    const endpoint = "http://localhost:5000/api/create/business";
+    const payload = data;
+    // debugger;
+    fetch(endpoint , {
+    method: 'POST',
+    headers:{
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+    }).then(async res => {
+      if(!res.ok) {
+        console.error("Error in adding business");
       }
-    )
+      else {
+        console.log("Business successfully added");
+        console.log(res);
+        setActiveStep(2);
+      }   
+    })
+  }
+
+  const fireStoreAddLicense = () => {
+    // call the add license API!
+    const endpoint = "http://localhost:5000/api/create/license";
+    const payload = {
+      "businessId": businessId,
+      "cmo": country == "us" ? "USCMO" : "SOCAN",
+      "price": price,
+      "type": "DEF",
+      "validity": 12
+    };
+    debugger;
+    fetch(endpoint , {
+    method: 'POST',
+    headers:{
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+    }).then(async res => {
+      if(!res.ok) {
+        console.error("Error in adding license");
+      }
+      else {
+        console.log("License successfully added");
+        console.log(res);
+        setActiveStep(2);
+      }   
+    })
   }
 
   const addUserData = (type, newId) => {
@@ -453,4 +492,33 @@ export default function Questions({ businessId }) {
   );
 
 };
+
+// const authenticatedRequest = function(method, url, body) {
+//   if (!firebase.auth().currentUser) {
+//     throw new Error('Not authenticated. Make sure you\'re signed in!');
+//   }
+
+//   // Get the Firebase auth token to authenticate the request
+//   return firebase.auth().currentUser.getIdToken().then(function(token) {
+//     var request = {
+//       method: method,
+//       url: url,
+//       dataType: 'json',
+//       beforeSend: function(xhr) { xhr.setRequestHeader('Authorization', 'Bearer ' + token); }
+//     };
+
+//     if (method === 'POST') {
+//       request.contentType = 'application/json';
+//       request.body = JSON.stringify(body);
+//     }
+
+//     console.log('Making authenticated request:', method, url);
+//     return $.ajax(request).catch(function() {
+//       throw new Error('Request error: ' + method + ' ' + url);
+//     });
+//   });
+// };
+
+
+
 

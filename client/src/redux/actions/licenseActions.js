@@ -1,25 +1,28 @@
 export const getLicenses = (businessId) => {
-  return (dispatch, getState, { getFirebase }) => {
-    const firebase = getFirebase();
-    const licensesRef = firebase.firestore().collection("licenses");
-    firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).onSnapshot(doc => {
-      let licenses = [];
-      let licenseIds = doc.data().licenses
-      if (licenseIds && licenseIds.length > 0){
-        let filteredLicenses = (!businessId) ? licensesRef.where(firebase.firestore.FieldPath.documentId(), "in", licenseIds)
-        : licensesRef.where(firebase.firestore.FieldPath.documentId(), "in", licenseIds).where(
-          "business", "==", businessId
-        ); 
-        filteredLicenses.get().then(snapshot => {
-          snapshot.forEach(doc => {
-            let data = doc.data();
-            data["licenseId"] = doc.id;
-            licenses.push(data);
+  return async (dispatch, getState, { getFirebase }) => {
+    // call the backend API endpoint.
+    const endpoint = "http://localhost:5000/api/read/license" + (businessId ? `?business_id=${businessId}` : "")
+    const licenseResponse = 
+      await fetch(endpoint , {
+      method: 'GET',
+      headers:{
+        'Content-Type': 'application/json'
+      }
+    }).then(async res => {
+      if(!res.ok) {
+        const text = await res.text();
+        dispatch({type: 'GET_LICENSES_ERROR', text});
+      }
+      else {
+        // return res;
+        res = await res.json();
+        console.log(res);
+
+        dispatch({
+                type: 'GET_LICENSES_SUCCESS',
+                licenses: res,
         });
-      }).then(() => {
-        dispatch({type: 'GET_LICENSES_SUCCESS', licenses,});
-      });            
-      } 
-    });
+      }   
+    })
   };
 };

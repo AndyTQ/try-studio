@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 const items = [
   { icon: <SpotifyIcon />, name: "Spotify", enabled: true },
   { icon: <AppleIcon />, name: "Apple Music (Coming)", enabled: false },
-  { icon: <YouTubeIcon />,  name: "PlaYoutube Music (Coming)", enabled: false },
+  { icon: <YouTubeIcon />,  name: "Youtube Music (Coming)", enabled: false },
 ];
 
 const streamingServicePanel = () => {
