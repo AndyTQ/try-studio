@@ -124,8 +124,7 @@ app.post("/api/create/business", jsonParser, (req, res) => {
         ///////////////// Create Business /////////////////
         
         let newId = db.collection("businesses").doc().id;
-        
-        console.log(`Creating new business ${newId}......\n`);
+      
         data["id"] = newId; // for convenience of retrieval
         data["licenses"] = [];
         
